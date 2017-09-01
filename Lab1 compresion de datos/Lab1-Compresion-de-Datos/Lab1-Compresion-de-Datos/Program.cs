@@ -13,12 +13,17 @@ namespace Lab1_Compresion_de_Datos
         {
             UploadFile UF = new UploadFile();
             AnalyzeTxt AT = new AnalyzeTxt();
-            Console.WriteLine("Type file path");
-            string pathFile = Console.ReadLine();
-            List<byte[]> txtlines = UF.OpenFile(pathFile);
-            Console.WriteLine(txtlines[0]);
-            Console.WriteLine();
-            Console.WriteLine(AT.GetTxt(txtlines[0]));
+            List<string> listaStrings = new List<string>();
+            Console.Write("Type file path>");
+            //List<byte[]> txtlines = UF.OpenFile(Console.ReadLine());
+            string[] array = UF.OpenFileString(Console.ReadLine());
+            for (int i = 0; i < array.Length; i++)
+            {
+                listaStrings.Add(RleEncoding.Compress(array[i]));
+            }
+            //Console.WriteLine(txtlines[0].ToString());
+            //Console.WriteLine();
+            //Console.WriteLine(AT.GetTxt(txtlines[0]));
             Console.ReadKey();
 
         }

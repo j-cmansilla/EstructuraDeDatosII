@@ -9,6 +9,17 @@ namespace Lab1_Compresion_de_Datos.Utilities
 {
     class UploadFile
     {
+        public string[] OpenFileString(string FilePath)
+        {
+            if (File.Exists(FilePath))
+            {
+                return File.ReadAllLines(FilePath);
+            }
+            else
+            {
+                return null;
+            }
+        }
         public List<byte[]> OpenFile(string FilePath)
         {
             if(File.Exists(FilePath))

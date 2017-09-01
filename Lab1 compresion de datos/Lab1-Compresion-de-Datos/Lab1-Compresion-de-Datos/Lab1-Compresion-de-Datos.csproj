@@ -46,6 +46,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AnalyzeTxt.cs" />
+    <Compile Include="Utilities\RleEncoding.cs" />
     <Compile Include="Utilities\UploadFile.cs" />
   </ItemGroup>
   <ItemGroup>
