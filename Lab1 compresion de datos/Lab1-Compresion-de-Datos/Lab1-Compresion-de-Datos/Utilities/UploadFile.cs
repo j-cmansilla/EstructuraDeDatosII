@@ -22,7 +22,8 @@ namespace Lab1_Compresion_de_Datos.Utilities
         }
         public List<byte[]> OpenFile(string FilePath)
         {
-            if(File.Exists(FilePath))
+            //string something = Encoding.ASCII.GetString(toBytes); byte to string
+            if (File.Exists(FilePath))
             {
                 List<byte[]> insta = new List<byte[]>();
                 string [] filetxt = File.ReadAllLines(FilePath);
