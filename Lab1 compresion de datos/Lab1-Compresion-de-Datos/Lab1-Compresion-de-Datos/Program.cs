@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lab1_Compresion_de_Datos.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,16 @@ namespace Lab1_Compresion_de_Datos
     {
         static void Main(string[] args)
         {
+            UploadFile UF = new UploadFile();
+            AnalyzeTxt AT = new AnalyzeTxt();
+            Console.WriteLine("Type file path");
+            string pathFile = Console.ReadLine();
+            List<byte[]> txtlines = UF.OpenFile(pathFile);
+            Console.WriteLine(txtlines[0]);
+            Console.WriteLine();
+            Console.WriteLine(AT.GetTxt(txtlines[0]));
+            Console.ReadKey();
+
         }
     }
 }
