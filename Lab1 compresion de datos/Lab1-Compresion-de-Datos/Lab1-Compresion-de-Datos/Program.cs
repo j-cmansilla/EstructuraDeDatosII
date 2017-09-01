@@ -11,6 +11,7 @@ namespace Lab1_Compresion_de_Datos
     {
         static void Main(string[] args)
         {
+            Dictionary<string,int> Characters = new Dictionary<string, int>();
             UploadFile UF = new UploadFile();
             AnalyzeTxt AT = new AnalyzeTxt();
             Console.WriteLine("Type file path");

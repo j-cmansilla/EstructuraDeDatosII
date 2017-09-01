@@ -23,13 +23,17 @@ namespace Lab1_Compresion_de_Datos.Utilities
                 }
                 else
                 {
-                    strResult.Add(CountA.ToString() + characterA);
+                    strResult.Add(getcharacter(CountA).ToString() + characterA);
                     characterA = CharactersTxt[i];
                     CountA = 1;
                 }
             }
             
             return string.Join("", strResult);
+        }
+        public char getcharacter(int count)
+        {
+            return Convert.ToChar(count);
         }
     }
 }
