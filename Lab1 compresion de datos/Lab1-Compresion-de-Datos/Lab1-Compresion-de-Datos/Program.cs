@@ -1,6 +1,7 @@
 ﻿using Lab1_Compresion_de_Datos.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,18 +13,20 @@ namespace Lab1_Compresion_de_Datos
         static void Main(string[] args)
         {
             string filePath = string.Empty;
-            Dictionary<string, int> Characters = new Dictionary<string, int>();
             UploadFile UF = new UploadFile();
             AnalyzeTxt AT = new AnalyzeTxt();
+            Console.WriteLine("File Compressed!");
             Instructions();
             Console.Clear();
             Console.WriteLine("                                             Welcome to RLE COMPRESSOR V 1.1");
             Console.WriteLine();
             Console.Write("RLE> ");
-            filePath = Console.ReadLine();
-            string[] array = Compress.CompressAllLines(UF.OpenFileString(filePath));
+            while (!CommadLine.RecognizeCommand(Console.ReadLine()))
+            {
+                Console.WriteLine();
+                Console.Write("RLE> ");
+            }
             Console.ReadKey();
-
         }
         
         private static void Instructions()
