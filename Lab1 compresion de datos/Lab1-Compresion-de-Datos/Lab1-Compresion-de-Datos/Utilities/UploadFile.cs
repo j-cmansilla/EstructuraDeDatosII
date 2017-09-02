@@ -15,8 +15,8 @@ namespace Lab1_Compresion_de_Datos.Utilities
             if (File.Exists(FilePath))
             {
                 List<byte[]> insta = new List<byte[]>();
-                string [] filetxt = File.ReadAllLines(FilePath);
-                for (int i = 0; i<filetxt.Length ; i++)
+                string[] filetxt = File.ReadAllLines(FilePath);
+                for (int i = 0; i < filetxt.Length; i++)
                 {
                     byte[] bytesarrr = Encoding.ASCII.GetBytes(filetxt[i]);
                     insta.Add(bytesarrr);

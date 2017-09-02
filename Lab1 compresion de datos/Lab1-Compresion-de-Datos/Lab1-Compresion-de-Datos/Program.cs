@@ -20,6 +20,8 @@ namespace Lab1_Compresion_de_Datos
             Console.WriteLine(txtlines[0]);
             Console.WriteLine();
             Console.WriteLine(AT.GetTxt(txtlines[0]));
+            Console.WriteLine();
+            //Console.WriteLine(AT.DesTxt(AT.GetTxt(txtlines[0])));
             Console.ReadKey();
 
         }
