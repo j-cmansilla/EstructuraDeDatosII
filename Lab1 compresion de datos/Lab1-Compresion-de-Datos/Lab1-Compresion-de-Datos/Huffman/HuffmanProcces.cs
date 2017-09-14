@@ -10,13 +10,15 @@ namespace Lab1_Compresion_de_Datos.Huffman
     class HuffmanProcces
     {
         private List<HuffmanNode> MainList = new List<HuffmanNode>();
-        public Dictionary<string, string> BinaryCodes = new Dictionary<string, string>();
+        private Dictionary<string, string> BinaryCodes = new Dictionary<string, string>();
+        public List<string> A = new List<string>();
 
         public void DoHuffman(byte[] bytes)
         {
             getMainList(bytes);
             CreateTree();
             getBinaryCodes(MainList.First(), null);
+            ConvertHuffman(bytes);
         }
 
         private void getMainList(byte[] FS) //Create the mainlist of characters
@@ -47,7 +49,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 MainList.RemoveAt(0);
                 HuffmanNode NodeB = MainList.First();
                 MainList.RemoveAt(0);
-                HuffmanNode NewNode = new HuffmanNode(); //create new node from
+                HuffmanNode NewNode = new HuffmanNode(); //create new node 
                 NewNode.CreateNode(NodeA, NodeB);
                 MainList.Add(NewNode);
                 MainList.Sort();
@@ -55,7 +57,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
             }
         }
 
-        private void getBinaryCodes(HuffmanNode root, string LR)
+        private void getBinaryCodes(HuffmanNode root, string LR) //Go throw tree setting codes
         {
             if (root != null)
             {
@@ -67,7 +69,16 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 getBinaryCodes(root.leftNode, LR + "0");
                 getBinaryCodes(root.righNode, LR + "1");
             }
-        }
+        } 
+
+        private void ConvertHuffman(byte[] original) //Translate to Binary huffman codes
+        {
+            for (int i = 0; i < original.Count(); i++)
+            {
+               string character =  Convert.ToChar(original[i]).ToString();
+                A.Add(BinaryCodes[character]);
+            }
+        } 
 
     }
 }
