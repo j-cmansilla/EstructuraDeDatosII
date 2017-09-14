@@ -19,8 +19,9 @@ namespace Lab1_Compresion_de_Datos
             BinaryReader lecturaBinaria = new BinaryReader(original);
             var bytes = lecturaBinaria.ReadBytes((int)original.Length);
             // Compress.HuffmanCompression(bytes, filePath);
+
             HuffmanProcces HP = new HuffmanProcces();
-            HP.DoHuffman(bytes);
+            HP.DoHuffman(bytes); //Create tree with codes
 
             AnalyzeTxt AT = new AnalyzeTxt();
             Console.WriteLine("File Compressed!");

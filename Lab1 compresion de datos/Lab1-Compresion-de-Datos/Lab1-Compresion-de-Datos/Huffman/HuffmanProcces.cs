@@ -9,15 +9,17 @@ namespace Lab1_Compresion_de_Datos.Huffman
 {
     class HuffmanProcces
     {
-        public List<HuffmanNode> MainList = new List<HuffmanNode>();
+        private List<HuffmanNode> MainList = new List<HuffmanNode>();
+        public Dictionary<string, string> BinaryCodes = new Dictionary<string, string>();
+
         public void DoHuffman(byte[] bytes)
         {
             getMainList(bytes);
             CreateTree();
             getBinaryCodes(MainList.First(), null);
-
         }
-        public void getMainList(byte[] FS) //Create the mainlist of characters
+
+        private void getMainList(byte[] FS) //Create the mainlist of characters
         {
             for (int i = 0; i < FS.Length; i++)
             {
@@ -36,10 +38,10 @@ namespace Lab1_Compresion_de_Datos.Huffman
             MainList.Sort();
         }
 
-        public void CreateTree()//The list is in order, theres no need to search.
+        private void CreateTree()//The list is in order, theres no need to search.
         {
             int i = 0;
-            for (i =0; i < MainList.Count; i++)
+            for (i = 0; i < MainList.Count; i++)
             {
                 HuffmanNode NodeA = MainList.First();
                 MainList.RemoveAt(0);
@@ -52,13 +54,18 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 i = 0;
             }
         }
-        public void getBinaryCodes(HuffmanNode root, string LR)
+
+        private void getBinaryCodes(HuffmanNode root, string LR)
         {
             if (root != null)
             {
-                root.binaryCode = root.binaryCode + LR;
-                getBinaryCodes(root.leftNode, "0");
-                getBinaryCodes(root.righNode, "1");
+                root.binaryCode += LR;
+                if (root.leaf)
+                {
+                    BinaryCodes.Add(root.Character, root.binaryCode);
+                }
+                getBinaryCodes(root.leftNode, LR + "0");
+                getBinaryCodes(root.righNode, LR + "1");
             }
         }
 
