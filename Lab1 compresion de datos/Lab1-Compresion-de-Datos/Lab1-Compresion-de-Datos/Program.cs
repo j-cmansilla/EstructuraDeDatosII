@@ -30,6 +30,7 @@ namespace Lab1_Compresion_de_Datos
         
         private static void Instructions()
         {
+            ///INSTRUCCIONES :)
             Console.WriteLine("                                             Welcome to RLE COMPRESSOR V 1.1");
             Console.WriteLine("                                                    -INSTRUCTIONS-");
             Console.WriteLine();
