@@ -9,7 +9,6 @@ namespace Lab1_Compresion_de_Datos.Utilities
 {
     static class CommadLine
     {
-        static UploadFile UF = new UploadFile();
         private static void ChangeColor(string color)
         {
             if (color == "red")
@@ -55,7 +54,7 @@ namespace Lab1_Compresion_de_Datos.Utilities
                         }
                         else
                         {
-                            if (!commands[3].ToLower().Equals("-f"))
+                            if (!commands[2].ToLower().Equals("-f"))
                             {
                                 ChangeColor("red");
                                 Console.WriteLine("Sentence '-f' is missing!");
@@ -64,6 +63,7 @@ namespace Lab1_Compresion_de_Datos.Utilities
                             }
                             else
                             {
+                                string originalFilePath = filePath;
                                 if (!File.Exists(filePath))
                                 {
                                     ChangeColor("red");
@@ -72,11 +72,37 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                     return false;
                                 }
                                 else
-                                { 
-                                        //Decompress
-                                        string[] array = Compress.CompressAllLines(UF.OpenFileString(commands[4]));
-                                        File.WriteAllLines(filePath + ".rlex", array);
-                                        Console.WriteLine("File Compressed!");
+                                {
+                                    string ext = string.Empty;
+                                    for (int i = filePath.Length-1; i > 0; i--)
+                                    {
+                                        if (filePath[i] != '.')
+                                        {
+                                            ext = ext + filePath[i];
+                                            filePath = filePath.Remove(i,1);
+                                        }
+                                        else
+                                        {
+                                            if (ext != "xelr")
+                                            {
+                                                ChangeColor("red");
+                                                Console.WriteLine("File is not valid. You must add a file with .rlex extension!");
+                                                ChangeColor("s");
+                                                return false;
+                                            }
+                                            else
+                                            {
+                                                filePath = filePath.Remove(i,1);
+                                                i = 0;
+                                            }
+                                        }
+                                    }
+                                    //Decompress
+                                    FileStream original = new FileStream(originalFilePath,FileMode.Open);
+                                    BinaryReader lecturaBinaria = new BinaryReader(original);
+                                    var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+                                    Compress.DeCompressAllBytes(bytes,filePath);
+                                    Console.WriteLine("File Decompressed!");
                                 }
                             }
                         }
@@ -102,9 +128,14 @@ namespace Lab1_Compresion_de_Datos.Utilities
                             else
                             {
                                 //Compress
-                                string[] array = Compress.CompressAllLines(UF.OpenFileString(filePath));
-                                File.WriteAllLines(filePath+".rlex",array);
+                                FileStream original = new FileStream(filePath, FileMode.Open);
+                                BinaryReader lecturaBinaria = new BinaryReader(original);
+                                var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+                                Compress.CompressAllBytes(bytes,filePath);
+                                long previousLenght = new System.IO.FileInfo(filePath).Length;
                                 Console.WriteLine("File Compressed!");
+                                long newLenght = new System.IO.FileInfo(filePath+".rlex").Length;
+                                Report.PrintReport((double)previousLenght, (double)newLenght);
                             }
                         }
                     }

@@ -48,8 +48,7 @@
     <Compile Include="Utilities\AnalyzeTxt.cs" />
     <Compile Include="Utilities\CommadLine.cs" />
     <Compile Include="Utilities\Compress.cs" />
-    <Compile Include="Utilities\RleEncoding.cs" />
-    <Compile Include="Utilities\UploadFile.cs" />
+    <Compile Include="Utilities\Report.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
