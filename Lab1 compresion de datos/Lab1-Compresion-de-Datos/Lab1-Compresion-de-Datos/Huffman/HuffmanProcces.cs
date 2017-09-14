@@ -9,16 +9,18 @@ namespace Lab1_Compresion_de_Datos.Huffman
 {
     class HuffmanProcces
     {
-        private List<HuffmanNode> MainList = new List<HuffmanNode>();
+        private List<HuffmanNode> MainList = new List<HuffmanNode>(); //Tree main list
         private Dictionary<string, string> BinaryCodes = new Dictionary<string, string>();
-        public List<string> A = new List<string>();
+        public List<string> A = new List<string>(); //new file 
+        public string CodesForCompressFile; //Codes and extension for decompress
 
-        public void DoHuffman(byte[] bytes)
+        public void DoHuffman(byte[] bytes, string extension)
         {
             getMainList(bytes);
             CreateTree();
             getBinaryCodes(MainList.First(), null);
             ConvertHuffman(bytes);
+            EssentialInformation(extension);
         }
 
         private void getMainList(byte[] FS) //Create the mainlist of characters
@@ -80,5 +82,13 @@ namespace Lab1_Compresion_de_Datos.Huffman
             }
         } 
 
+        private void EssentialInformation(string ex) 
+        {
+            CodesForCompressFile = ex + "//";
+            for (int i = 0; i < BinaryCodes.Count; i++)
+            {
+                CodesForCompressFile += BinaryCodes.ElementAt(i).Key + "//" + BinaryCodes.ElementAt(i).Value + "//";
+            }
+        }
     }
 }
