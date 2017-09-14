@@ -1,4 +1,5 @@
-﻿using Lab1_Compresion_de_Datos.Utilities;
+﻿using Lab1_Compresion_de_Datos.Huffman;
+using Lab1_Compresion_de_Datos.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,9 @@ namespace Lab1_Compresion_de_Datos
             FileStream original = new FileStream(filePath, FileMode.Open);
             BinaryReader lecturaBinaria = new BinaryReader(original);
             var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-            Compress.HuffmanCompression(bytes, filePath);
+            // Compress.HuffmanCompression(bytes, filePath);
+            HuffmanProcces HP = new HuffmanProcces();
+            HP.DoHuffman(bytes);
 
             AnalyzeTxt AT = new AnalyzeTxt();
             Console.WriteLine("File Compressed!");
