@@ -13,6 +13,12 @@ namespace Lab1_Compresion_de_Datos
         static void Main(string[] args)
         {
             string filePath = string.Empty;
+            filePath = Console.ReadLine();
+            FileStream original = new FileStream(filePath, FileMode.Open);
+            BinaryReader lecturaBinaria = new BinaryReader(original);
+            var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+            Compress.HuffmanCompression(bytes, filePath);
+
             AnalyzeTxt AT = new AnalyzeTxt();
             Console.WriteLine("File Compressed!");
             Instructions();
