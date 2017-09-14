@@ -10,11 +10,9 @@ namespace Lab1_Compresion_de_Datos.Huffman
     {
         public string  Character; //Symbol 
         public double Count; //number of times its in the file
-        public HuffmanNode parentNode = null; // Parent node
+        public HuffmanNode parentNode; // Parent node
         public HuffmanNode leftNode = null;
         public HuffmanNode righNode = null;
-        public int binaryCode;
-        public bool leaf;
 
         public int CompareTo(HuffmanNode otherNode)
         {
@@ -34,7 +32,6 @@ namespace Lab1_Compresion_de_Datos.Huffman
             NodeB.parentNode = this;
             leftNode = NodeA;
             righNode = NodeB;
-            leaf = false;
         }
     }
 }

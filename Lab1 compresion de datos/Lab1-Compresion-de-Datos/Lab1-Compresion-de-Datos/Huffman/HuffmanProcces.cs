@@ -23,7 +23,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 }
                 else
                 {
-                    HuffmanNode newNode = new HuffmanNode() { Character = r, Count = 1, leaf = true }; //create a new node
+                    HuffmanNode newNode = new HuffmanNode() { Character = r, Count = 1, parentNode = null}; //create a new node
                     MainList.Add(newNode);
                 }
 
@@ -35,28 +35,19 @@ namespace Lab1_Compresion_de_Datos.Huffman
         public void CreateTree()//The list is in order, theres no need to search.
         {
             int listCount = MainList.Count;
-            for (int i = 0; i < listCount-1; i++)
+            for (int i = 0; i < listCount; i++)
             {
                 HuffmanNode NodeA = MainList.First();
                 MainList.RemoveAt(0);
                 HuffmanNode NodeB = MainList.First();
                 MainList.RemoveAt(0);
-                HuffmanNode NewNode = new HuffmanNode(); //create new node from
-                NewNode.CreateNode(NodeA, NodeB);
-                MainList.Add(NewNode);
-                MainList.Sort();
-                listCount = MainList.Count();
+                HuffmanNode NewNode;
+
             }
+
         }
-        public void getBinaryCodes(HuffmanNode root, int LR)
-        {
-            if (root != null)
-            {
-                root.binaryCode += LR;
-                getBinaryCodes(root.leftNode, 0);
-                getBinaryCodes(root.righNode, 1);
-            }
-        }
+
+
 
     }
 }
