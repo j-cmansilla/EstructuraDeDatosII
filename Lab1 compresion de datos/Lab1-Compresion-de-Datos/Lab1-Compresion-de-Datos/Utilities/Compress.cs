@@ -64,12 +64,12 @@ namespace Lab1_Compresion_de_Datos.Utilities
             file.Flush();
         }
 
-        public static void HuffmanEncoding(string [] data)
+        public static void HuffmanCompression(byte [] dataToCompress, string filepath)
         {
-            if (data.Length>0)
+            if (dataToCompress.Length>0)
             {
-                string actual = data[0];
-                for (int i = 0; i < data.Length; i++)
+                byte actual = dataToCompress[0];
+                for (int i = 0; i < dataToCompress.Length; i++)
                 {
 
                 }
