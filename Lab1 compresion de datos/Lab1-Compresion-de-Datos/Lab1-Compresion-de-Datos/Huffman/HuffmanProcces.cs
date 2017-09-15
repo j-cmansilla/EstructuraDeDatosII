@@ -12,7 +12,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
         private List<HuffmanNode> MainList = new List<HuffmanNode>(); //Tree main list
         private Dictionary<string, string> BinaryCodes = new Dictionary<string, string>();
         public List<string> A = new List<string>(); //new file 
-        public string CodesForCompressFile; //Codes and extension for decompress
+        public string CodesForDecompressFile; //Codes and extension for decompress
 
         public void DoHuffman(byte[] bytes, string extension)
         {
@@ -20,7 +20,8 @@ namespace Lab1_Compresion_de_Datos.Huffman
             CreateTree();
             getBinaryCodes(MainList.First(), null);
             ConvertHuffman(bytes);
-            EssentialInformation(extension);
+            EssentialInformation(Path.GetExtension(extension)); //get extension
+            CreateNewFile(CodesForDecompressFile, extension);
         }
 
         private void getMainList(byte[] FS) //Create the mainlist of characters
@@ -84,11 +85,20 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         private void EssentialInformation(string ex) 
         {
-            CodesForCompressFile = ex + "//";
+            CodesForDecompressFile = ex + "//";
             for (int i = 0; i < BinaryCodes.Count; i++)
             {
-                CodesForCompressFile += BinaryCodes.ElementAt(i).Key + "//" + BinaryCodes.ElementAt(i).Value + "//";
+                CodesForDecompressFile += BinaryCodes.ElementAt(i).Key + "//" + BinaryCodes.ElementAt(i).Value + "//";
             }
+        }
+
+        private void CreateNewFile(string firstline, string completePath) //Create new file, set the first line with the Dictionary codes and original extension
+        {
+            FileInfo file = new FileInfo(completePath);
+            string path = file.Directory.ToString();
+            string fileName = Path.GetFileNameWithoutExtension(completePath);
+            string NewFileName = path + "\\" + fileName + "1.comp";
+            File.WriteAllText(NewFileName, CodesForDecompressFile);
         }
     }
 }
