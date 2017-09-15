@@ -22,6 +22,7 @@ namespace Lab1_Compresion_de_Datos
 
             HuffmanProcces HP = new HuffmanProcces();
             HP.DoHuffman(bytes, original.Name); //Create tree with codes
+            HP.UndoHuffman(original.Name);
 
             AnalyzeTxt AT = new AnalyzeTxt();
             Console.WriteLine("File Compressed!");
