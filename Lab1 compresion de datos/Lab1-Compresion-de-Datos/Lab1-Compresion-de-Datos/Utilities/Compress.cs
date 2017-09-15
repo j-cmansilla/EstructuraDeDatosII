@@ -43,7 +43,7 @@ namespace Lab1_Compresion_de_Datos.Utilities
         public static void CompressAllBytes(byte [] dataToCompress, string filePath)
         {
             List<byte> listaBytes = RLECompression(dataToCompress);
-            FileStream file = new FileStream(filePath+".rlex",FileMode.Create,FileAccess.Write);
+            FileStream file = new FileStream(filePath+CommadLine.COMPRESSION_EXTENSION,FileMode.Create,FileAccess.Write);
             file.Write(listaBytes.ToArray(), 0, listaBytes.Count);
             file.Flush();
         }

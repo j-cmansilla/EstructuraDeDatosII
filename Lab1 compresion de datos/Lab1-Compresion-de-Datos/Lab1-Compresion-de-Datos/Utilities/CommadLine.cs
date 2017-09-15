@@ -9,6 +9,7 @@ namespace Lab1_Compresion_de_Datos.Utilities
 {
     static class CommadLine
     {
+        public const string COMPRESSION_EXTENSION = ".comp";
         private static void ChangeColor(string color)
         {
             if (color == "red")
@@ -83,10 +84,10 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                         }
                                         else
                                         {
-                                            if (ext != "xelr")
+                                            if (ext != "pmoc")
                                             {
                                                 ChangeColor("red");
-                                                Console.WriteLine("File is not valid. You must add a file with .rlex extension!");
+                                                Console.WriteLine("File is not valid. You must add a file with .comp extension!");
                                                 ChangeColor("s");
                                                 return false;
                                             }
@@ -134,7 +135,7 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                 Compress.CompressAllBytes(bytes,filePath);
                                 long previousLenght = new System.IO.FileInfo(filePath).Length;
                                 Console.WriteLine("File Compressed!");
-                                long newLenght = new System.IO.FileInfo(filePath+".rlex").Length;
+                                long newLenght = new System.IO.FileInfo(filePath+COMPRESSION_EXTENSION).Length;
                                 Report.PrintReport((double)previousLenght, (double)newLenght);
                             }
                         }
