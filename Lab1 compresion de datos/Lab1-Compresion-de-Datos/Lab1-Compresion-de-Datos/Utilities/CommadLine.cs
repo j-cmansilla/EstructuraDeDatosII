@@ -21,136 +21,283 @@ namespace Lab1_Compresion_de_Datos.Utilities
                 Console.ForegroundColor = ConsoleColor.White;
             }
         }
-        public static bool RecognizeCommand(string command)
+
+        public static bool RecognizeCommandHuffman(string command)
         {
             string[] commands = command.Split(' ');
             string filePath = string.Empty;
-            if (commands.Length > 4)
+            if (command != "")
             {
-                for (int i = 3; i < commands.Length; i++)
+                if (commands.Length > 4)
                 {
-                    filePath = filePath +" "+commands[i];
-                }
-            }
-            else
-            {
-                filePath = commands[3];
-            }
-            if (commands.Length<4)
-            {
-                return false;
-            }
-            else
-            {
-                if (commands[0].Equals("rle.exe"))
-                {
-                    if (!commands[1].ToLower().Equals("-c"))
+                    if (commands.Length > 4)
                     {
-                        if (!commands[1].ToLower().Equals("-d"))
+                        for (int i = 3; i < commands.Length; i++)
                         {
-                            ChangeColor("red");
-                            Console.WriteLine("Sentence '-c or -d' is missing!");
-                            ChangeColor("white");
-                            return false;
-                        }
-                        else
-                        {
-                            if (!commands[2].ToLower().Equals("-f"))
-                            {
-                                ChangeColor("red");
-                                Console.WriteLine("Sentence '-f' is missing!");
-                                ChangeColor("s");
-                                return false;
-                            }
-                            else
-                            {
-                                string originalFilePath = filePath;
-                                if (!File.Exists(filePath))
-                                {
-                                    ChangeColor("red");
-                                    Console.WriteLine("The file specified not exists!");
-                                    ChangeColor("r");
-                                    return false;
-                                }
-                                else
-                                {
-                                    string ext = string.Empty;
-                                    for (int i = filePath.Length-1; i > 0; i--)
-                                    {
-                                        if (filePath[i] != '.')
-                                        {
-                                            ext = ext + filePath[i];
-                                            filePath = filePath.Remove(i,1);
-                                        }
-                                        else
-                                        {
-                                            if (ext != "pmoc")
-                                            {
-                                                ChangeColor("red");
-                                                Console.WriteLine("File is not valid. You must add a file with .comp extension!");
-                                                ChangeColor("s");
-                                                return false;
-                                            }
-                                            else
-                                            {
-                                                filePath = filePath.Remove(i,1);
-                                                i = 0;
-                                            }
-                                        }
-                                    }
-                                    //Decompress
-                                    FileStream original = new FileStream(originalFilePath,FileMode.Open);
-                                    BinaryReader lecturaBinaria = new BinaryReader(original);
-                                    var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-                                    Compress.DeCompressAllBytes(bytes,filePath);
-                                    Console.WriteLine("File Decompressed!");
-                                }
-                            }
+                            filePath = filePath + " " + commands[i];
                         }
                     }
                     else
                     {
-                        if (!commands[2].ToLower().Equals("-f"))
+                        filePath = commands[3];
+                    }
+                    if (commands.Length < 4)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        if (commands[0].Equals("hfm.exe"))
                         {
-                            ChangeColor("red");
-                            Console.WriteLine("Sentence '-f' is missing!");
-                            ChangeColor("s");
-                            return false;
-                        }
-                        else
-                        {
-                            if (!File.Exists(filePath))
+                            if (!commands[1].ToLower().Equals("-c"))
                             {
-                                ChangeColor("red");
-                                Console.WriteLine("The file specified not exists!");
-                                ChangeColor("r");
-                                return false;
+                                if (!commands[1].ToLower().Equals("-d"))
+                                {
+                                    ChangeColor("red");
+                                    Console.WriteLine("Sentence '-c or -d' is missing!");
+                                    ChangeColor("white");
+                                    return false;
+                                }
+                                else
+                                {
+                                    if (!commands[2].ToLower().Equals("-f"))
+                                    {
+                                        ChangeColor("red");
+                                        Console.WriteLine("Sentence '-f' is missing!");
+                                        ChangeColor("s");
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        string originalFilePath = filePath;
+                                        if (!File.Exists(filePath))
+                                        {
+                                            ChangeColor("red");
+                                            Console.WriteLine("The file specified not exists!");
+                                            ChangeColor("r");
+                                            return false;
+                                        }
+                                        else
+                                        {
+                                            string ext = string.Empty;
+                                            for (int i = filePath.Length - 1; i > 0; i--)
+                                            {
+                                                if (filePath[i] != '.')
+                                                {
+                                                    ext = ext + filePath[i];
+                                                    filePath = filePath.Remove(i, 1);
+                                                }
+                                                else
+                                                {
+                                                    if (ext != "pmoc")
+                                                    {
+                                                        ChangeColor("red");
+                                                        Console.WriteLine("File is not valid. You must add a file with .comp extension!");
+                                                        ChangeColor("s");
+                                                        return false;
+                                                    }
+                                                    else
+                                                    {
+                                                        filePath = filePath.Remove(i, 1);
+                                                        i = 0;
+                                                    }
+                                                }
+                                            }
+                                            //Decompress
+                                            FileStream original = new FileStream(originalFilePath, FileMode.Open);
+                                            BinaryReader lecturaBinaria = new BinaryReader(original);
+                                            var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+                                            Compress.DeCompressAllBytes(bytes, filePath);
+                                            Console.WriteLine("File Decompressed!");
+                                        }
+                                    }
+                                }
                             }
                             else
                             {
-                                //Compress
-                                FileStream original = new FileStream(filePath, FileMode.Open);
-                                BinaryReader lecturaBinaria = new BinaryReader(original);
-                                var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-                                Compress.CompressAllBytes(bytes,filePath);
-                                long previousLenght = new System.IO.FileInfo(filePath).Length;
-                                Console.WriteLine("File Compressed!");
-                                long newLenght = new System.IO.FileInfo(filePath+COMPRESSION_EXTENSION).Length;
-                                Report.PrintReport((double)previousLenght, (double)newLenght);
+                                if (!commands[2].ToLower().Equals("-f"))
+                                {
+                                    ChangeColor("red");
+                                    Console.WriteLine("Sentence '-f' is missing!");
+                                    ChangeColor("s");
+                                    return false;
+                                }
+                                else
+                                {
+                                    if (!File.Exists(filePath))
+                                    {
+                                        ChangeColor("red");
+                                        Console.WriteLine("The file specified not exists!");
+                                        ChangeColor("r");
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        //Compress
+                                        FileStream original = new FileStream(filePath, FileMode.Open);
+                                        BinaryReader lecturaBinaria = new BinaryReader(original);
+                                        var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+                                        Compress.CompressAllBytes(bytes, filePath);
+                                        long previousLenght = new System.IO.FileInfo(filePath).Length;
+                                        Console.WriteLine("File Compressed!");
+                                        long newLenght = new System.IO.FileInfo(filePath + COMPRESSION_EXTENSION).Length;
+                                        Report.PrintReport((double)previousLenght, (double)newLenght);
+                                    }
+                                }
                             }
+
+                            return true;
+                        }
+                        else
+                        {
+                            ChangeColor("red");
+                            Console.WriteLine("Sentence 'hfm.exe' is missing!");
+                            ChangeColor("r");
+                            return false;
                         }
                     }
-
-                    return true;
-                }
-                else
-                {
-                    ChangeColor("red");
-                    Console.WriteLine("Sentence 'rle.exe' is missing!");
-                    ChangeColor("r");
-                    return false;
                 }
             }
+            return false;
+        }
+
+        public static bool RecognizeCommandRLE(string command)
+        {
+            string[] commands = command.Split(' ');
+            string filePath = string.Empty;
+            if (command != "")
+            {
+                if (commands.Length > 4)
+                {
+                    if (commands.Length > 4)
+                    {
+                        for (int i = 3; i < commands.Length; i++)
+                        {
+                            filePath = filePath + " " + commands[i];
+                        }
+                    }
+                    else
+                    {
+                        filePath = commands[3];
+                    }
+                    if (commands.Length < 4)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        if (commands[0].Equals("rle.exe"))
+                        {
+                            if (!commands[1].ToLower().Equals("-c"))
+                            {
+                                if (!commands[1].ToLower().Equals("-d"))
+                                {
+                                    ChangeColor("red");
+                                    Console.WriteLine("Sentence '-c or -d' is missing!");
+                                    ChangeColor("white");
+                                    return false;
+                                }
+                                else
+                                {
+                                    if (!commands[2].ToLower().Equals("-f"))
+                                    {
+                                        ChangeColor("red");
+                                        Console.WriteLine("Sentence '-f' is missing!");
+                                        ChangeColor("s");
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        string originalFilePath = filePath;
+                                        if (!File.Exists(filePath))
+                                        {
+                                            ChangeColor("red");
+                                            Console.WriteLine("The file specified not exists!");
+                                            ChangeColor("r");
+                                            return false;
+                                        }
+                                        else
+                                        {
+                                            string ext = string.Empty;
+                                            for (int i = filePath.Length - 1; i > 0; i--)
+                                            {
+                                                if (filePath[i] != '.')
+                                                {
+                                                    ext = ext + filePath[i];
+                                                    filePath = filePath.Remove(i, 1);
+                                                }
+                                                else
+                                                {
+                                                    if (ext != "pmoc")
+                                                    {
+                                                        ChangeColor("red");
+                                                        Console.WriteLine("File is not valid. You must add a file with .comp extension!");
+                                                        ChangeColor("s");
+                                                        return false;
+                                                    }
+                                                    else
+                                                    {
+                                                        filePath = filePath.Remove(i, 1);
+                                                        i = 0;
+                                                    }
+                                                }
+                                            }
+                                            //Decompress
+                                            FileStream original = new FileStream(originalFilePath, FileMode.Open);
+                                            BinaryReader lecturaBinaria = new BinaryReader(original);
+                                            var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+                                            Compress.DeCompressAllBytes(bytes, filePath);
+                                            Console.WriteLine("File Decompressed!");
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (!commands[2].ToLower().Equals("-f"))
+                                {
+                                    ChangeColor("red");
+                                    Console.WriteLine("Sentence '-f' is missing!");
+                                    ChangeColor("s");
+                                    return false;
+                                }
+                                else
+                                {
+                                    if (!File.Exists(filePath))
+                                    {
+                                        ChangeColor("red");
+                                        Console.WriteLine("The file specified not exists!");
+                                        ChangeColor("r");
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        //Compress
+                                        FileStream original = new FileStream(filePath, FileMode.Open);
+                                        BinaryReader lecturaBinaria = new BinaryReader(original);
+                                        var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+                                        Compress.CompressAllBytes(bytes, filePath);
+                                        long previousLenght = new System.IO.FileInfo(filePath).Length;
+                                        Console.WriteLine("File Compressed!");
+                                        long newLenght = new System.IO.FileInfo(filePath + COMPRESSION_EXTENSION).Length;
+                                        Report.PrintReport((double)previousLenght, (double)newLenght);
+                                    }
+                                }
+                            }
+
+                            return true;
+                        }
+                        else
+                        {
+                            ChangeColor("red");
+                            Console.WriteLine("Sentence 'rle.exe' is missing!");
+                            ChangeColor("r");
+                            return false;
+                        }
+                    }
+                }
+            }
+            return false;
         }
     }
 }

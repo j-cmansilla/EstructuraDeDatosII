@@ -47,7 +47,6 @@
     <Compile Include="Huffman\HuffmanProcces.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\AnalyzeTxt.cs" />
     <Compile Include="Utilities\CommadLine.cs" />
     <Compile Include="Utilities\Compress.cs" />
     <Compile Include="Utilities\Report.cs" />
