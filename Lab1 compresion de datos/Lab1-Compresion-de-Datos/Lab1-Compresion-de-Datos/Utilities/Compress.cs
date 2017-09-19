@@ -69,35 +69,5 @@ namespace Lab1_Compresion_de_Datos.Utilities
             file.Write(listaBytes.ToArray(), 0, listaBytes.Count);
             file.Flush();
         }
-
-        public static void HuffmanCompression(byte[] dataToCompress, string filepath)
-        {
-            List<byte> listaBytes = RLECompression(dataToCompress);
-            List<byte> listaBytesHuffman = new List<byte>();
-            int count = 0;
-            byte actualByte;
-            for (int i = 0; i < listaBytes.Count; i++)
-            {
-                count = (int)listaBytes.ElementAt(i);
-                actualByte = listaBytes.ElementAt(i + 1);
-                for (int j = 1; j < listaBytes.Count; j = j + 2)
-                {
-                    if (actualByte == listaBytes.ElementAt(j))
-                    {
-                        count = count + (int)listaBytes.ElementAt(j - 1);
-                        if (i + 1 != listaBytes.Count)
-                        {
-                            listaBytes.RemoveAt(i);
-                            listaBytes.RemoveAt(i + 1);
-                        }
-                    }
-                }
-                listaBytesHuffman.Add((byte)count);
-                listaBytesHuffman.Add(actualByte);
-                i++;
-            }
-            Console.ReadKey();
-        }
-
     }
 }

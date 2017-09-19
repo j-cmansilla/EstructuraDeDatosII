@@ -114,6 +114,8 @@ namespace Lab1_Compresion_de_Datos
                     RLECOMP();
                     break;
                 default:
+                    Console.Clear();
+                    InstructionsSecondLevel();
                     break;
             }
         }

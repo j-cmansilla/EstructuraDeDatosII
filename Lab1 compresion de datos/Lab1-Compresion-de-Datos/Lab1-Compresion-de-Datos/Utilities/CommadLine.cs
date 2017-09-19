@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lab1_Compresion_de_Datos.Huffman;
 
 namespace Lab1_Compresion_de_Datos.Utilities
 {
@@ -137,11 +138,15 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                         FileStream original = new FileStream(filePath, FileMode.Open);
                                         BinaryReader lecturaBinaria = new BinaryReader(original);
                                         var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+                                        HuffmanProcces HF = new HuffmanProcces();
+                                        HF.DoHuffman(bytes, filePath);
+                                        Console.WriteLine("File compressed!");
+                                        /*
                                         Compress.CompressAllBytes(bytes, filePath);
                                         long previousLenght = new System.IO.FileInfo(filePath).Length;
                                         Console.WriteLine("File Compressed!");
                                         long newLenght = new System.IO.FileInfo(filePath + COMPRESSION_EXTENSION).Length;
-                                        Report.PrintReport((double)previousLenght, (double)newLenght);
+                                        Report.PrintReport((double)previousLenght, (double)newLenght);*/
                                     }
                                 }
                             }

@@ -25,6 +25,18 @@ namespace Lab1_Compresion_de_Datos.Huffman
             CreateNewFile(extension);
         }
 
+        private List<byte> ConvertToBytes(List<string> listToConvert) {
+            List<byte> listConverted = new List<byte>();
+            for (int i = 0; i < listToConvert.Count; i++)
+            {
+                for (int j = 0; j < listToConvert.ElementAt(i).Length; j++)
+                {
+                    listConverted.Add((byte)listToConvert.ElementAt(i)[j]);
+                }  
+            }
+            return listConverted;
+        }
+
         #region Compress
         private void getMainList(byte[] FS) //Create the mainlist of characters
         {
@@ -105,6 +117,9 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string fileName = Path.GetFileNameWithoutExtension(completePath);
             string NewFileName = path + "\\" + fileName + ".comp";
             File.WriteAllText(NewFileName, CodesForDecompressFile);
+            FileStream fs = new FileStream(NewFileName, FileMode.Append, FileAccess.Write);
+            fs.Write(ConvertToBytes(A).ToArray(), 0, A.Count);
+            fs.Flush();
         }
         #endregion
 
