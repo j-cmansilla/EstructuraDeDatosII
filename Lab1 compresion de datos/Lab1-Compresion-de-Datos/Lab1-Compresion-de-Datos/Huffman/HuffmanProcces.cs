@@ -157,8 +157,10 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string path = file.Directory.ToString();
             string fileName = Path.GetFileNameWithoutExtension(completePath);
             string NewFileName = path + "\\" + fileName + ".comp";
+            FileInfo myFile = new FileInfo(NewFileName + "D");
+            myFile.Attributes &= ~FileAttributes.Hidden;
             File.WriteAllText(NewFileName + "D", CodesForDecompressFile);
-            File.SetAttributes(NewFileName + ".compD", File.GetAttributes(NewFileName + ".compD") | FileAttributes.Hidden);
+            myFile.Attributes |= FileAttributes.Hidden;
             FileStream fs = new FileStream(NewFileName, FileMode.Create, FileAccess.Write);
             fs.Write(tempByte, 0, tempByte.Count());
             fs.Flush();
@@ -214,6 +216,9 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         private void getLines(string path) //get dictionary of codes
         {
+            FileInfo myFile = new FileInfo(OrinilaExtenssion + ".compD");
+            myFile.Attributes &= ~FileAttributes.Hidden;
+   
             A = File.ReadLines(OrinilaExtenssion + ".compD").ToList(); // document
             List<string> c = (A[0].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
             OrinilaExtenssion = c[0]; //extencion
@@ -233,7 +238,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 key = (A[i].Split(new string[] { "*" }, StringSplitOptions.None));
                 BinaryCodes.Add(key[1], key[0]);
             }
-
+            myFile.Attributes |= FileAttributes.Hidden;
             A.RemoveRange(0, diclength);
         }
 
@@ -258,11 +263,13 @@ namespace Lab1_Compresion_de_Datos.Huffman
                         if (BinaryCodes.Values.ElementAt(k) == "ENTER")
                         {
                             A.Add("\n");
+                            break;
                         }
                         else
                         {
                             A.Add(BinaryCodes.Values.ElementAt(k));
                             code = string.Empty;
+                            break;
                         }
                     }
                 }
