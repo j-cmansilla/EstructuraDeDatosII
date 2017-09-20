@@ -20,10 +20,11 @@ namespace Lab1_Compresion_de_Datos.Huffman
             getMainList(bytes);
             CreateTree();
             getBinaryCodes(MainList.First(), null);
-            ConvertHuffman(bytes);
-            EssentialInformation(Path.GetExtension(extension)); //get extension
-            group();
-            CreateNewFile(extension);
+            ConvertHuffman(bytes); //checked
+            EssentialInformation(Path.GetFileName(extension)); //get extension
+            group(); 
+            byte[] tempBytes = ConvertToBytes(); //checked
+            CreateNewFile(extension, tempBytes);
         }
 
 
@@ -39,7 +40,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 {
                     B.Add(temp.Substring(i, 8));
                 }
-                catch
+                catch //fix this... ****
                 {
                     B.Add(temp.Substring(i, temp.Length - i));
                 }
@@ -135,7 +136,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
             CodesForDecompressFile += System.Environment.NewLine;
         }
 
-        private void CreateNewFile(string completePath) //Create new file, set the first line with the Dictionary codes and original extension
+        private void CreateNewFile(string completePath, byte[] tempByte) //Create new file, set the first line with the Dictionary codes and original extension
         {
             FileInfo file = new FileInfo(completePath);
             string path = file.Directory.ToString();
@@ -143,13 +144,23 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string NewFileName = path + "\\" + fileName + ".comp";
             File.WriteAllText(NewFileName, CodesForDecompressFile);
             FileStream fs = new FileStream(NewFileName, FileMode.Append, FileAccess.Write);
-            byte[] tempByte = ConvertToBytes();
             fs.Write(tempByte, 0, tempByte.Count());
-           // StreamWriter sw = new StreamWriter(fs);
-          //  sw.Write(tempByte);
             fs.Flush();
-           // sw.Close();
+
+            StringBuilder StringBuilder = new StringBuilder();
+            for (int i = 0; i < tempByte.Count(); i++)
+            {
+                StringBuilder.Append(Convert.ToChar(tempByte[i]));
+            }
+           // System.IO.StreamWriter files = new System.IO.StreamWriter(completePath);
+          //  files.WriteLine(StringBuilder.ToString()); // "sb" is the StringBuilder
+
+
         }
+        #endregion
+
+        #region Compress.2
+
         #endregion
 
         public void UndoHuffman(string extension)
