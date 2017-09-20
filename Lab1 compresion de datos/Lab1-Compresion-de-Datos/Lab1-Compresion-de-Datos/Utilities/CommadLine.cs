@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lab1_Compresion_de_Datos.Huffman;
+using Lab1_Compresion_de_Datos.HuffmanVersion2;
 
 namespace Lab1_Compresion_de_Datos.Utilities
 {
@@ -105,12 +106,14 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                                 }
                                             }
                                             //Decompress
-                                            FileStream original = new FileStream(originalFilePath, FileMode.Open);
+                                            //FileStream original = new FileStream(originalFilePath, FileMode.Open);
                                             //BinaryReader lecturaBinaria = new BinaryReader(original);
                                             //var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-                                            HuffmanProcces HF = new HuffmanProcces();
+                                            /*HuffmanProcces HF = new HuffmanProcces();
                                             original.Close();
-                                            HF.UndoHuffman(filePath);
+                                            HF.UndoHuffman(filePath);*/
+                                            HuffmanCompressor HFC = new HuffmanCompressor();
+                                            HFC.Decompress(filePath);
                                             Console.WriteLine("File Decompressed!");
                                             /*
                                             Compress.DeCompressAllBytes(bytes, filePath);*/
@@ -139,16 +142,23 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                     else
                                     {
                                         //Compress
-                                        FileStream original = new FileStream(filePath, FileMode.Open);
+                                        /*FileStream original = new FileStream(filePath, FileMode.Open);
                                         BinaryReader lecturaBinaria = new BinaryReader(original);
-                                        var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-                                        HuffmanProcces HF = new HuffmanProcces();
+                                        var bytes = lecturaBinaria.ReadBytes((int)original.Length);*/
+                                        HuffmanCompressor HFC = new HuffmanCompressor();
+                                        HFC.Compress(filePath);
+
+                                        /*HuffmanProcces HF = new HuffmanProcces();
                                         HF.DoHuffman(bytes, filePath);
                                         long previousLenght = new System.IO.FileInfo(filePath).Length;
                                         Console.WriteLine("File Compressed!");
                                         string newPath = filePath.Substring(0,filePath.Length-4);
                                         long newLenght = new System.IO.FileInfo(newPath + COMPRESSION_EXTENSION).Length;
-                                        Report.PrintReport((double)previousLenght, (double)newLenght);
+                                        Report.PrintReport((double)previousLenght, (double)newLenght);*/
+
+
+
+
                                         /*
                                         Compress.CompressAllBytes(bytes, filePath);
                                         long previousLenght = new System.IO.FileInfo(filePath).Length;

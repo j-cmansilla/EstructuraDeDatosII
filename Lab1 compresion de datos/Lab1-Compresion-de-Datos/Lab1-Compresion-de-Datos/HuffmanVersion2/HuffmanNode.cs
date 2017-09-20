@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab1_Compresion_de_Datos.HuffmanVersion2
 {
-    class HuffmanNode
+    public class HuffmanNode
     {
         public HuffmanNode()
         {

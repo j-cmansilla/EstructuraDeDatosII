@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace Lab1_Compresion_de_Datos.HuffmanVersion2
 {
-    class HuffmanCompressor
+    public class HuffmanCompressor
     {
         private HuffmanNode oRootHuffmanNode;
         private List<HuffmanNode> oValueHuffmanNodes;
+        private Dictionary<char, string> oCharToBinaryWordDictionary = new Dictionary<char, string>();
+        private string CodesForCompressedFile = string.Empty;
+        private List<byte> bytesLit = new List<byte>();
 
         private List<HuffmanNode> BuildBinaryTree(string Value)
         {
@@ -38,6 +41,49 @@ namespace Lab1_Compresion_de_Datos.HuffmanVersion2
             return oHuffmanNodes;
         }
 
+        private void EssentialInformation(string ex)
+        {
+            CodesForCompressedFile = ex + "*" + oCharToBinaryWordDictionary.Count + System.Environment.NewLine;
+            for (int i = 0; i < oCharToBinaryWordDictionary.Count; i++)
+            {
+                if (oCharToBinaryWordDictionary.Values.ElementAt(i) == "\n")
+                {
+                    i++;
+                }
+                CodesForCompressedFile += "|"+oCharToBinaryWordDictionary.ElementAt(i).Key + "|" + oCharToBinaryWordDictionary.ElementAt(i).Value + System.Environment.NewLine;
+            }
+            CodesForCompressedFile += System.Environment.NewLine;
+        }
+
+        private List<byte> FileWrite(string ex)
+        {
+            for (int i = 0; i < ex.Length; i++)
+            {
+                bytesLit.Add((byte)ex[i]);
+            }
+            bytesLit.Add((byte)('|'));
+            bytesLit.Add((byte)oCharToBinaryWordDictionary.Count);
+            bytesLit.Add((byte)'\n');
+            for (int i = 0; i < oCharToBinaryWordDictionary.Count; i++)
+            {
+                if (oCharToBinaryWordDictionary.Values.ElementAt(i) == "\n")
+                {
+                    i++;
+                }
+                for (int j = 0; j < oCharToBinaryWordDictionary.Count; j++)
+                {
+                    bytesLit.Add((byte)oCharToBinaryWordDictionary.ElementAt(i).Key);
+                    bytesLit.Add((byte)'|');
+                    for (int k = 0; k < oCharToBinaryWordDictionary.ElementAt(i).Value.Length; k++)
+                    {
+                        bytesLit.Add((byte)oCharToBinaryWordDictionary.ElementAt(i).Value.ElementAt(k));
+                    }
+                    bytesLit.Add((byte)'\n');
+                }
+            }
+            return bytesLit;
+        }
+
         public void Compress(string FileName)
         {
             FileInfo oFileInfo = new FileInfo(FileName);
@@ -60,17 +106,24 @@ namespace Lab1_Compresion_de_Datos.HuffmanVersion2
                     .ToList();
 
                 //  Construct char to binary word dictionary for quick value to binary word resolution
-                Dictionary<char, string> oCharToBinaryWordDictionary = new Dictionary<char, string>();
+                
                 foreach (HuffmanNode oHuffmanNode in oValueHuffmanNodes)
                 {
                     oCharToBinaryWordDictionary.Add(oHuffmanNode.Value.Value, oHuffmanNode.BinaryWord);
                 }
 
+                EssentialInformation(Path.GetFileName(FileName));
+                FileWrite(Path.GetFileName(FileName));
+
                 StringBuilder oStringBuilder = new StringBuilder();
                 List<byte> oByteList = new List<byte>();
+
+                
+
                 for (int i = 0; i < sFileContents.Length; i++)
                 {
                     string sWord = "";
+
 
                     //  Append the binary word value using the char located at the current file position
                     oStringBuilder.Append(oCharToBinaryWordDictionary[sFileContents[i]]);
@@ -104,7 +157,7 @@ namespace Lab1_Compresion_de_Datos.HuffmanVersion2
                 }
 
                 //  Write compressed file
-                string sCompressedFileName = Path.Combine(oFileInfo.Directory.FullName, String.Format("{0}.compressed", oFileInfo.Name.Replace(oFileInfo.Extension, "")));
+                string sCompressedFileName = Path.Combine(oFileInfo.Directory.FullName, String.Format("{0}.comp", oFileInfo.Name.Replace(oFileInfo.Extension, "")));
                 if (File.Exists(sCompressedFileName) == true)
                 {
                     File.Delete(sCompressedFileName);
@@ -119,11 +172,11 @@ namespace Lab1_Compresion_de_Datos.HuffmanVersion2
 
         public void Decompress(string FileName)
         {
-            FileInfo oFileInfo = new FileInfo(FileName);
+            FileInfo oFileInfo = new FileInfo(FileName+".comp");
 
             if (oFileInfo.Exists == true)
             {
-                string sCompressedFileName = String.Format("{0}.compressed", oFileInfo.FullName.Replace(oFileInfo.Extension, ""));
+                string sCompressedFileName = String.Format("{0}.comp", oFileInfo.FullName.Replace(oFileInfo.Extension, ""));
 
                 byte[] oBuffer = null;
                 using (FileStream oFileStream = File.OpenRead(sCompressedFileName))

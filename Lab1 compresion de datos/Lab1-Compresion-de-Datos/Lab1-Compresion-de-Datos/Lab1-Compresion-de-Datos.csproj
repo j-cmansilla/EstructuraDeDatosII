@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HuffmanVersion2\HuffmanCompressor.cs" />
+    <Compile Include="HuffmanVersion2\HuffmanNode.cs" />
     <Compile Include="Huffman\HuffmanNode.cs" />
     <Compile Include="Huffman\HuffmanProcces.cs" />
     <Compile Include="Program.cs" />
