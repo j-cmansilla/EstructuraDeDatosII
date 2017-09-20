@@ -29,9 +29,9 @@ namespace Lab1_Compresion_de_Datos.Utilities
             string filePath = string.Empty;
             if (command != "")
             {
-                if (commands.Length > 4)
+                if (commands.Length >= 4)
                 {
-                    if (commands.Length > 4)
+                    if (commands.Length >= 4)
                     {
                         for (int i = 3; i < commands.Length; i++)
                         {

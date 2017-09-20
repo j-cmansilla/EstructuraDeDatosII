@@ -22,22 +22,45 @@ namespace Lab1_Compresion_de_Datos.Huffman
             getBinaryCodes(MainList.First(), null);
             ConvertHuffman(bytes);
             EssentialInformation(Path.GetExtension(extension)); //get extension
+            group();
             CreateNewFile(extension);
         }
 
-        private List<byte> ConvertToBytes(List<string> listToConvert) {
-            List<byte> listConverted = new List<byte>();
-            for (int i = 0; i < listToConvert.Count; i++)
-            {
-                for (int j = 0; j < listToConvert.ElementAt(i).Length; j++)
-                {
-                    listConverted.Add((byte)listToConvert.ElementAt(i)[j]);
-                }  
-            }
-            return listConverted;
-        }
 
         #region Compress
+
+        private void group()
+        {
+            List<string> B = new List<string>();
+            string temp = string.Join("", A);
+            for (int i = 0; i < temp.Length; i += 8)
+            {
+                try
+                {
+                    B.Add(temp.Substring(i, 8));
+                }
+                catch
+                {
+                    B.Add(temp.Substring(i, temp.Length - i));
+                }
+            }
+            A = B;
+        }
+
+
+        private byte[] ConvertToBytes()
+        {
+            List<byte> listConverted = new List<byte>();
+            for (int i = 0; i < A.Count; i++)
+            {
+                int t = Convert.ToByte(A.ElementAt(i), 2);
+                byte a = (byte)t;
+                    listConverted.Add(a);
+               
+            }
+            byte[] asdf = listConverted.ToArray();
+            return listConverted.ToArray();
+        }
         private void getMainList(byte[] FS) //Create the mainlist of characters
         {
             for (int i = 0; i < FS.Length; i++)
@@ -118,7 +141,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string NewFileName = path + "\\" + fileName + ".comp";
             File.WriteAllText(NewFileName, CodesForDecompressFile);
             FileStream fs = new FileStream(NewFileName, FileMode.Append, FileAccess.Write);
-            fs.Write(ConvertToBytes(A).ToArray(), 0, A.Count);
+            fs.Write(ConvertToBytes(), 0, A.Count);
             fs.Flush();
         }
         #endregion
