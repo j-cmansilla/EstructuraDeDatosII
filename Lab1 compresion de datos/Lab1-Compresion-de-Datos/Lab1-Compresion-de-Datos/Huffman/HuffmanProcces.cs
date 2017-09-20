@@ -122,14 +122,14 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         private void EssentialInformation(string ex)
         {
-            CodesForDecompressFile = ex + "//";
+            CodesForDecompressFile = ex + System.Environment.NewLine;
             for (int i = 0; i < BinaryCodes.Count; i++)
             {
                 if (BinaryCodes.ElementAt(i).Key == "\n")
                 {
                     i++;
                 }
-                CodesForDecompressFile += BinaryCodes.ElementAt(i).Key + "//" + BinaryCodes.ElementAt(i).Value + "//";
+                CodesForDecompressFile += BinaryCodes.ElementAt(i).Key + "//" + BinaryCodes.ElementAt(i).Value + System.Environment.NewLine;
             }
         }
 
@@ -140,7 +140,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string fileName = Path.GetFileNameWithoutExtension(completePath);
             string NewFileName = path + "\\" + fileName + ".comp";
             File.WriteAllText(NewFileName, CodesForDecompressFile);
-            FileStream fs = new FileStream(NewFileName+".PruEBA", FileMode.Create, FileAccess.Write);
+            FileStream fs = new FileStream(NewFileName, FileMode.Append, FileAccess.Write);
             fs.Write(ConvertToBytes(), 0, A.Count);
             fs.Flush();
         }
