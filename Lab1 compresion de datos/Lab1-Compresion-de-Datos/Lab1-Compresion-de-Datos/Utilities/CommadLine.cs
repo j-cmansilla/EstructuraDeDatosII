@@ -150,16 +150,18 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                         BinaryReader lecturaBinaria = new BinaryReader(original);
                                         var bytes = lecturaBinaria.ReadBytes((int)original.Length);
                                         HuffmanProcces HF = new HuffmanProcces();
-                                        HF.DoHuffman(bytes, filePath);
-                                        long previousLenght = new System.IO.FileInfo(filePath).Length;
-                                        Console.WriteLine("File Compressed!");
-                                        string newPath = filePath.Substring(0,filePath.Length-4);
-                                        long newLenght = new System.IO.FileInfo(newPath + COMPRESSION_EXTENSION).Length;
-                                        Report.PrintReport((double)previousLenght, (double)newLenght);
-
-
-
-
+                                        if(HF.DoHuffman(bytes, filePath))
+                                        {
+                                            long previousLenght = new System.IO.FileInfo(filePath).Length;
+                                            Console.WriteLine("File Compressed!");
+                                            string newPath = filePath.Substring(0, filePath.Length - 4);
+                                            long newLenght = new System.IO.FileInfo(newPath + COMPRESSION_EXTENSION).Length;
+                                            Report.PrintReport((double)previousLenght, (double)newLenght);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("There was a problem, try again");
+                                        }
                                         /*
                                         Compress.CompressAllBytes(bytes, filePath);
                                         long previousLenght = new System.IO.FileInfo(filePath).Length;

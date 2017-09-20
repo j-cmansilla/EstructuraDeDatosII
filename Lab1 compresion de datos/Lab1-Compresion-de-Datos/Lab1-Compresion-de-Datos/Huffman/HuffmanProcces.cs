@@ -15,16 +15,24 @@ namespace Lab1_Compresion_de_Datos.Huffman
         public string CodesForDecompressFile; //Codes and extension for decompress
         string OrinilaExtenssion; //path 
 
-        public void DoHuffman(byte[] bytes, string extension)
+        public bool DoHuffman(byte[] bytes, string extension)
         {
-            getMainList(bytes);
-            CreateTree();
-            getBinaryCodes(MainList.First(), null);
-            ConvertHuffman(bytes);
-            EssentialInformation(Path.GetFileName(extension)); //get extension
-            group();
-            byte[] tempBytes = ConvertToBytes();
-            CreateNewFile(extension, tempBytes);
+            try
+            {
+                getMainList(bytes);
+                CreateTree();
+                getBinaryCodes(MainList.First(), null);
+                ConvertHuffman(bytes);
+                EssentialInformation(Path.GetFileName(extension)); //get extension
+                group();
+                byte[] tempBytes = ConvertToBytes();
+                CreateNewFile(extension, tempBytes);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 
@@ -158,16 +166,23 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         public bool UndoHuffman(string extension)
         {
-            OrinilaExtenssion = extension;
-            getLines(extension);
-            if (IsHuffman())
+            try
             {
-                byte[] bytes = getbytes(extension);
-                ConvertFile(bytes);
-                CreateF(extension);
-                return true;
+                OrinilaExtenssion = extension;
+                getLines(extension);
+                if (IsHuffman())
+                {
+                    byte[] bytes = getbytes(extension);
+                    ConvertFile(bytes);
+                    CreateF(extension);
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch
+            {
+                return false;
+            }
         }
 
         #region Decompress
