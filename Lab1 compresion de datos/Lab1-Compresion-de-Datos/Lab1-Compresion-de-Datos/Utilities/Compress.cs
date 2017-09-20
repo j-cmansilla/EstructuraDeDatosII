@@ -13,6 +13,7 @@ namespace Lab1_Compresion_de_Datos.Utilities
         private static List<byte> RLECompression(byte[] dataToCompress)
         {
             List<byte> listaBytes = new List<byte>();
+            listaBytes.Add((byte)'R');
             byte actualByte = 0;
             byte countByte = 0;
             int countB = 0;
@@ -48,26 +49,31 @@ namespace Lab1_Compresion_de_Datos.Utilities
             file.Flush();
         }
 
-        public static void DeCompressAllBytes(byte[] dataToDeCompress, string filePath)
+        public static bool DeCompressAllBytes(byte[] dataToDeCompress, string filePath)
         {
             List<byte> listaBytes = new List<byte>();
             string linea = string.Empty;
-            int count = (int)dataToDeCompress[0];
-            for (int i = 0; i < dataToDeCompress.Length-1; i++)
+            if (dataToDeCompress[0].Equals('R'))
             {
-                for (int j = 0; j < count; j++)
+                int count = (int)dataToDeCompress[1];
+                for (int i = 1; i < dataToDeCompress.Length - 1; i++)
                 {
-                    listaBytes.Add(dataToDeCompress[i+1]);
+                    for (int j = 1; j < count; j++)
+                    {
+                        listaBytes.Add(dataToDeCompress[i + 1]);
+                    }
+                    i = i + 1;
+                    if (i + 1 != dataToDeCompress.Length)
+                    {
+                        count = (int)dataToDeCompress[i + 1];
+                    }
                 }
-                i = i + 1;
-                if (i+1 != dataToDeCompress.Length)
-                {
-                    count = (int)dataToDeCompress[i + 1];
-                }
+                FileStream file = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+                file.Write(listaBytes.ToArray(), 0, listaBytes.Count);
+                file.Flush();
+                return true;
             }
-            FileStream file = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-            file.Write(listaBytes.ToArray(), 0, listaBytes.Count);
-            file.Flush();
+            return false;
         }
     }
 }

@@ -270,47 +270,53 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                             FileStream original = new FileStream(originalFilePath, FileMode.Open);
                                             BinaryReader lecturaBinaria = new BinaryReader(original);
                                             var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-                                            Compress.DeCompressAllBytes(bytes, filePath);
-                                            Console.WriteLine("File Decompressed!");
-                                        }
+                                            if (Compress.DeCompressAllBytes(bytes, filePath))
+                                            {
+                                                Console.WriteLine("File Decompressed!");
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("ERROR: THE FILE WASNT COMPRESSED WITH RLE!");
+                                            }
                                     }
                                 }
                             }
+                        }
+                        else
+                        {
+                            if (!commands[2].ToLower().Equals("-f"))
+                            {
+                                ChangeColor("red");
+                                Console.WriteLine("Sentence '-f' is missing!");
+                                ChangeColor("s");
+                                return false;
+                            }
                             else
                             {
-                                if (!commands[2].ToLower().Equals("-f"))
+                                if (!File.Exists(filePath))
                                 {
                                     ChangeColor("red");
-                                    Console.WriteLine("Sentence '-f' is missing!");
-                                    ChangeColor("s");
+                                    Console.WriteLine("The file specified not exists!");
+                                    ChangeColor("r");
                                     return false;
                                 }
                                 else
                                 {
-                                    if (!File.Exists(filePath))
-                                    {
-                                        ChangeColor("red");
-                                        Console.WriteLine("The file specified not exists!");
-                                        ChangeColor("r");
-                                        return false;
-                                    }
-                                    else
-                                    {
-                                        //Compress
-                                        FileStream original = new FileStream(filePath, FileMode.Open);
-                                        BinaryReader lecturaBinaria = new BinaryReader(original);
-                                        var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-                                        Compress.CompressAllBytes(bytes, filePath);
-                                        long previousLenght = new System.IO.FileInfo(filePath).Length;
-                                        Console.WriteLine("File Compressed!");
-                                        long newLenght = new System.IO.FileInfo(filePath + COMPRESSION_EXTENSION).Length;
-                                        Report.PrintReport((double)previousLenght, (double)newLenght);
-                                    }
+                                    //Compress
+                                    FileStream original = new FileStream(filePath, FileMode.Open);
+                                    BinaryReader lecturaBinaria = new BinaryReader(original);
+                                    var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+                                    Compress.CompressAllBytes(bytes, filePath);
+                                    long previousLenght = new System.IO.FileInfo(filePath).Length;
+                                    Console.WriteLine("File Compressed!");
+                                    long newLenght = new System.IO.FileInfo(filePath + COMPRESSION_EXTENSION).Length;
+                                    Report.PrintReport((double)previousLenght, (double)newLenght);
                                 }
                             }
-
-                            return true;
                         }
+
+                        return true;
+                    }
                         else
                         {
                             ChangeColor("red");
