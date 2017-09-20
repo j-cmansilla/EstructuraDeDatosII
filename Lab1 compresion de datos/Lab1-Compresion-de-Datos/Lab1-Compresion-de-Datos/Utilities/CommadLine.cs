@@ -144,7 +144,11 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                         var bytes = lecturaBinaria.ReadBytes((int)original.Length);
                                         HuffmanProcces HF = new HuffmanProcces();
                                         HF.DoHuffman(bytes, filePath);
-                                        Console.WriteLine("File compressed!");
+                                        long previousLenght = new System.IO.FileInfo(filePath).Length;
+                                        Console.WriteLine("File Compressed!");
+                                        string newPath = filePath.Substring(0,filePath.Length-4);
+                                        long newLenght = new System.IO.FileInfo(newPath + COMPRESSION_EXTENSION).Length;
+                                        Report.PrintReport((double)previousLenght, (double)newLenght);
                                         /*
                                         Compress.CompressAllBytes(bytes, filePath);
                                         long previousLenght = new System.IO.FileInfo(filePath).Length;

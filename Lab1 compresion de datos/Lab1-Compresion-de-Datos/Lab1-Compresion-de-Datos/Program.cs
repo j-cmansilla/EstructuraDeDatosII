@@ -14,16 +14,7 @@ namespace Lab1_Compresion_de_Datos
         static void Main(string[] args)
         {
             string filePath = string.Empty;
-            /*filePath = Console.ReadLine();
-            FileStream original = new FileStream(filePath, FileMode.Open);
-            BinaryReader lecturaBinaria = new BinaryReader(original);
-            var bytes = lecturaBinaria.ReadBytes((int)original.Length);*/
-            // Compress.HuffmanCompression(bytes, filePath);
-
-            //HuffmanProcces HP = new HuffmanProcces();
-            //HP.DoHuffman(bytes, original.Name); //Create tree with codes
-
-            //HP.UndoHuffman(original.Name);
+            Console.Title = "RLE AND HUFFMAN COMPRESSION BY MANSILLA AND CHANG";
 
             Instructions();
             Console.Clear();
