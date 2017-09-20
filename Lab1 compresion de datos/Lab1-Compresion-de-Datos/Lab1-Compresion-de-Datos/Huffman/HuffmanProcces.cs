@@ -48,7 +48,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 {
                     B.Add(temp.Substring(i, 8));
                 }
-                catch //************************************************************************************************************************
+                catch 
                 {
                     B.Add(temp.Substring(i, temp.Length - i));
                 }
@@ -158,6 +158,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string fileName = Path.GetFileNameWithoutExtension(completePath);
             string NewFileName = path + "\\" + fileName + ".comp";
             File.WriteAllText(NewFileName + "D", CodesForDecompressFile);
+            File.SetAttributes(NewFileName + ".compD", File.GetAttributes(NewFileName + ".compD") | FileAttributes.Hidden);
             FileStream fs = new FileStream(NewFileName, FileMode.Create, FileAccess.Write);
             fs.Write(tempByte, 0, tempByte.Count());
             fs.Flush();
@@ -214,7 +215,6 @@ namespace Lab1_Compresion_de_Datos.Huffman
         private void getLines(string path) //get dictionary of codes
         {
             A = File.ReadLines(OrinilaExtenssion + ".compD").ToList(); // document
-            File.SetAttributes(OrinilaExtenssion + ".compD", File.GetAttributes(OrinilaExtenssion + ".compD") | FileAttributes.Hidden);
             List<string> c = (A[0].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
             OrinilaExtenssion = c[0]; //extencion
             isHuff = c[2];
