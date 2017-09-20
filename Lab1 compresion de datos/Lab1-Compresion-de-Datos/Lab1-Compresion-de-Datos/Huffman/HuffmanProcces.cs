@@ -122,7 +122,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         private void EssentialInformation(string ex)
         {
-            CodesForDecompressFile = ex + "*" + BinaryCodes.Count + System.Environment.NewLine;
+            CodesForDecompressFile = ex + "*" + BinaryCodes.Count +"*" + "H" +  System.Environment.NewLine;
             for (int i = 0; i < BinaryCodes.Count; i++)
             {
                 if (BinaryCodes.ElementAt(i).Key == "\n")
@@ -147,13 +147,18 @@ namespace Lab1_Compresion_de_Datos.Huffman
         }
         #endregion
 
-        public void UndoHuffman(string extension)
+        public bool UndoHuffman(string extension)
         {
             OrinilaExtenssion = extension;
             getLines(extension);
-            byte[] bytes = getbytes(extension); 
-            ConvertFile(bytes);
-            CreateF(extension);
+            if (IsHuffman())
+            {
+                byte[] bytes = getbytes(extension);
+                ConvertFile(bytes);
+                CreateF(extension);
+                return true;
+            }
+            return false;
         }
 
         #region Decompress
@@ -173,11 +178,21 @@ namespace Lab1_Compresion_de_Datos.Huffman
             File.Delete(path + ".comp");
             return bytes;
         }
+
+        string isHuff;
+        public bool IsHuffman()
+        {
+            if (isHuff == "H")
+                return true;
+            return false;
+        }
+
         private void getLines(string path) //get dictionary of codes
         {
             A = File.ReadLines(OrinilaExtenssion+".compD").ToList(); // document
             List<string> c = (A[0].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
             OrinilaExtenssion = c[0]; //extencion
+            isHuff = c[2];
             int diclength = int.Parse(c[1]);
             BinaryCodes = new Dictionary<string, string>();
             string[] key;

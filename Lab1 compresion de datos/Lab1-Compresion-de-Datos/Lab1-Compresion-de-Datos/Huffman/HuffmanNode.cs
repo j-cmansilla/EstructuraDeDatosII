@@ -13,7 +13,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
         public HuffmanNode parentNode = null; // Parent node
         public HuffmanNode leftNode = null;
         public HuffmanNode righNode = null;
-        public string binaryCode;
+        public string binaryCode; //Huffman codes
         public bool leaf = true;
 
         public int CompareTo(HuffmanNode otherNode)

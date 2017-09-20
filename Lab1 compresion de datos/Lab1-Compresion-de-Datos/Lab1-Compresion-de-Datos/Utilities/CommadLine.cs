@@ -111,8 +111,14 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                             //var bytes = lecturaBinaria.ReadBytes((int)original.Length);
                                             HuffmanProcces HF = new HuffmanProcces();
                                             original.Close();
-                                            HF.UndoHuffman(filePath);
-                                            Console.WriteLine("File Decompressed!");
+                                            if (HF.UndoHuffman(filePath))
+                                            {
+                                                Console.WriteLine("File Decompressed!");
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("The file wasnt compressed with huffman");
+                                            }
                                             /*
                                             Compress.DeCompressAllBytes(bytes, filePath);*/
                                         }
