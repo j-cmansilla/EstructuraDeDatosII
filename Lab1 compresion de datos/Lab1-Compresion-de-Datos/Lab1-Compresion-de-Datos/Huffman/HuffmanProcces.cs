@@ -171,7 +171,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
             List<byte[]> listConverted = new List<byte[]>();
             for (int i = 2; i < A.Count; i++)
             {
-               listConverted.Add(Encoding.ASCII.GetBytes(A[i]));
+                listConverted.Add(Encoding.ASCII.GetBytes(A[i]))    ;
             }
             byte[] array = listConverted.SelectMany(a => a).ToArray();
             return array;
@@ -199,9 +199,12 @@ namespace Lab1_Compresion_de_Datos.Huffman
             A = new List<string>();
             for (int i = 0; i < original.Count(); i++)
             {
-                string character = Convert.ToChar(original[i]).ToString();
-                A.Add(BinaryCodes[character]);
+                A.Add(Convert.ToString(original[i], 2));
+                
             }
+            var result = String.Join("", A.ToArray());
+
+
         }
         #endregion
     }
