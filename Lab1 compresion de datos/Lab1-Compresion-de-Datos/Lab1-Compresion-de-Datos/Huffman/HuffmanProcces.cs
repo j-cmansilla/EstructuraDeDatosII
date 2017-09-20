@@ -169,7 +169,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
         private byte[] getbytes()
         {
             List<byte[]> listConverted = new List<byte[]>();
-            for (int i = 2; i < A.Count; i++)
+            for (int i = 0; i < A.Count; i++)
             {
                 listConverted.Add(Encoding.ASCII.GetBytes(A[i]))    ;
             }
@@ -178,10 +178,10 @@ namespace Lab1_Compresion_de_Datos.Huffman
         }
         private void getLines() //get dictionary of codes
         {
-            A = File.ReadLines("C:\\Users\\sebas\\Desktop\\Test.comp").ToList(); // document
+            A = File.ReadLines(OrinilaExtenssion+".comp").ToList(); // document
             List<string> c = (A[0].Split(new string[] { "//" }, StringSplitOptions.None)).ToList();
-            c.RemoveAt(0);
             OrinilaExtenssion = c[0]; //extencion
+            c.RemoveAt(0);
             List<string> c1 = (A[1].Split(new string[] { "//" }, StringSplitOptions.None)).ToList();
             c1.RemoveAt(0);
             c.AddRange(c1);
@@ -192,6 +192,8 @@ namespace Lab1_Compresion_de_Datos.Huffman
             {
                 BinaryCodes.Add(c[i + 1], c[i]);
             }
+            A.RemoveAt(0);
+            A.RemoveAt(0);
         }
 
         private void ConvertFile(byte[] original)//Dictionary -> <CODE, ASCII>
