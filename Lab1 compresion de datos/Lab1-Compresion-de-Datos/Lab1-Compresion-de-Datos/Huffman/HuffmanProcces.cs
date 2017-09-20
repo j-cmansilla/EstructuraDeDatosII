@@ -59,7 +59,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                
             }
             byte[] asdf = listConverted.ToArray();
-            return listConverted.ToArray();
+            return asdf;
         }
         private void getMainList(byte[] FS) //Create the mainlist of characters
         {
@@ -140,7 +140,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string fileName = Path.GetFileNameWithoutExtension(completePath);
             string NewFileName = path + "\\" + fileName + ".comp";
             File.WriteAllText(NewFileName, CodesForDecompressFile);
-            FileStream fs = new FileStream(NewFileName, FileMode.Append, FileAccess.Write);
+            FileStream fs = new FileStream(NewFileName+".PruEBA", FileMode.Create, FileAccess.Write);
             fs.Write(ConvertToBytes(), 0, A.Count);
             fs.Flush();
         }
