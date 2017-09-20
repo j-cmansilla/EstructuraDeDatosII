@@ -54,9 +54,11 @@ namespace Lab1_Compresion_de_Datos.Huffman
             for (int i = 0; i < A.Count; i++)
             {
                 int t = Convert.ToByte(A.ElementAt(i), 2);
+                // char a = Convert.ToChar(t);
                 byte a = (byte)t;
                 listConverted.Add(a);
             }
+            Console.WriteLine(listConverted[0].ToString());
             return listConverted.ToArray();
         }
 
@@ -141,8 +143,12 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string NewFileName = path + "\\" + fileName + ".comp";
             File.WriteAllText(NewFileName, CodesForDecompressFile);
             FileStream fs = new FileStream(NewFileName, FileMode.Append, FileAccess.Write);
-            fs.Write(ConvertToBytes(), 0, A.Count);
+            byte[] tempByte = ConvertToBytes();
+            fs.Write(tempByte, 0, tempByte.Count());
+           // StreamWriter sw = new StreamWriter(fs);
+          //  sw.Write(tempByte);
             fs.Flush();
+           // sw.Close();
         }
         #endregion
 
