@@ -108,8 +108,11 @@ namespace Lab1_Compresion_de_Datos.Utilities
                                             FileStream original = new FileStream(originalFilePath, FileMode.Open);
                                             BinaryReader lecturaBinaria = new BinaryReader(original);
                                             var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-                                            Compress.DeCompressAllBytes(bytes, filePath);
+                                            HuffmanProcces HF = new HuffmanProcces();
+                                            HF.UndoHuffman(bytes,filePath);
                                             Console.WriteLine("File Decompressed!");
+                                            /*
+                                            Compress.DeCompressAllBytes(bytes, filePath);*/
                                         }
                                     }
                                 }
