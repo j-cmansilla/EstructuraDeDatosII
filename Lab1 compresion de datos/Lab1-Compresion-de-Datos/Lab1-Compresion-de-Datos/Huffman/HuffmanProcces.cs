@@ -55,11 +55,9 @@ namespace Lab1_Compresion_de_Datos.Huffman
             for (int i = 0; i < A.Count; i++)
             {
                 int t = Convert.ToByte(A.ElementAt(i), 2);
-                // char a = Convert.ToChar(t);
                 byte a = (byte)t;
                 listConverted.Add(a);
             }
-            Console.WriteLine(listConverted[0].ToString());
             return listConverted.ToArray();
         }
 
@@ -142,21 +140,10 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string path = file.Directory.ToString();
             string fileName = Path.GetFileNameWithoutExtension(completePath);
             string NewFileName = path + "\\" + fileName + ".comp";
-            File.WriteAllText(NewFileName, CodesForDecompressFile);
-            FileStream fs = new FileStream(NewFileName, FileMode.Append, FileAccess.Write);
+            File.WriteAllText(NewFileName + "D", CodesForDecompressFile);
+            FileStream fs = new FileStream(NewFileName, FileMode.Create, FileAccess.Write);
             fs.Write(tempByte, 0, tempByte.Count());
             fs.Flush();
-
-            //StringBuilder StringBuilder = new StringBuilder();
-            //for (int i = 0; i < tempByte.Count(); i++)
-            //{
-            //    StringBuilder.Append(Convert.ToChar(tempByte[i]));
-            //}
-            //File.WriteAllText(NewFileName, StringBuilder.ToString());
-           // System.IO.StreamWriter files = new System.IO.StreamWriter(completePath);
-          //  files.WriteLine(StringBuilder.ToString()); // "sb" is the StringBuilder;
-
-
         }
         #endregion
 
@@ -167,46 +154,36 @@ namespace Lab1_Compresion_de_Datos.Huffman
         public void UndoHuffman(string extension)
         {
             OrinilaExtenssion = extension;
-            getLines();
-            byte[] bytes = getbytes();
+            getLines(extension); //checked
+            byte[] bytes = getbytes(extension); //checked
             ConvertFile(bytes);
-            CreateF();
-            //fill file....
+            CreateF(extension);
         }
 
         #region Decompress
-        private void CreateF()
+        private void CreateF(string pathorg)
         {
-            FileInfo file = new FileInfo(OrinilaExtenssion);
+            FileInfo file = new FileInfo(pathorg);
             string path = file.Directory.ToString();
-            string fileName = Path.GetFileNameWithoutExtension(OrinilaExtenssion);
-            string NewFileName = path + "\\" + fileName + OrinilaExtenssion;
-            File.WriteAllText(NewFileName, CodesForDecompressFile);
+           // string fileName = Path.GetTempPath(file);
+            string NewFileName = path + "\\" + OrinilaExtenssion +"fdgsd" ;
+            File.WriteAllText(NewFileName, String.Join("", A.ToArray()));
             
         }
-        private byte[] getbytes()
-        {
-            List<byte[]> listConverted = new List<byte[]>();
-            for (int i = 0; i < A.Count; i++)
-            {
-                listConverted.Add(Encoding.ASCII.GetBytes(A[i]))    ;
-            }
-            byte[] array = listConverted.SelectMany(a => a).ToArray();
-            return array;
+        private byte[] getbytes(string path)
+        {     
+            FileStream original = new FileStream(path + ".comp", FileMode.Open);
+            BinaryReader lecturaBinaria = new BinaryReader(original);
+            var bytes = lecturaBinaria.ReadBytes((int)original.Length);
+            //File.Delete(path);
+            return bytes;
         }
-        private void getLines() //get dictionary of codes
+        private void getLines(string path) //get dictionary of codes
         {
-            A = File.ReadLines(OrinilaExtenssion+".comp").ToList(); // document
+            A = File.ReadLines(OrinilaExtenssion+".compD").ToList(); // document
             List<string> c = (A[0].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
             OrinilaExtenssion = c[0]; //extencion
             int diclength = int.Parse(c[1]);
-            //c.RemoveAt(0);
-            //List<string> c1 = (A[1].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
-            //c1.RemoveAt(0);
-            //c.AddRange(c1);
-            //c.RemoveAt(c.Count - 1);
-
-
             BinaryCodes = new Dictionary<string, string>();
             string[] key;
             for (int i = 1; i < diclength; i ++)
@@ -214,9 +191,13 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 key = (A[i].Split(new string[] { "*" }, StringSplitOptions.None));
                 BinaryCodes.Add(key[1], key[0]);
             }
-            //A.RemoveAt(0);
-            //A.RemoveAt(0);
+
             A.RemoveRange(0, diclength+1);
+
+
+            #region Sol V
+            //File.WriteAllLines(path, A);
+            #endregion
         }
 
         private void ConvertFile(byte[] original)//Dictionary -> <CODE, ASCII>
@@ -224,12 +205,28 @@ namespace Lab1_Compresion_de_Datos.Huffman
             A = new List<string>();
             for (int i = 0; i < original.Count(); i++)
             {
-                A.Add(Convert.ToString(original[i], 2));
-                
+                A.Add(Convert.ToString(original[i], 2).PadLeft(8, '0'));
             }
             var result = String.Join("", A.ToArray());
 
+            string temp;
+            int lth = 1, index = 0;
+            A = new List<string>();
 
+            for (int i = 0; i < result.Length; i++)
+            {
+                temp = result.Substring(index, lth);
+                if (BinaryCodes.ContainsKey(temp))
+                {
+                    A.Add(BinaryCodes[temp]);
+                    lth = 1;
+                    index = i;
+                }
+                else
+                {
+                    lth++;
+                }
+            }
         }
         #endregion
     }
