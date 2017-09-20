@@ -214,6 +214,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
         private void getLines(string path) //get dictionary of codes
         {
             A = File.ReadLines(OrinilaExtenssion + ".compD").ToList(); // document
+            File.SetAttributes(OrinilaExtenssion + ".compD", File.GetAttributes(OrinilaExtenssion + ".compD") | FileAttributes.Hidden);
             List<string> c = (A[0].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
             OrinilaExtenssion = c[0]; //extencion
             isHuff = c[2];
