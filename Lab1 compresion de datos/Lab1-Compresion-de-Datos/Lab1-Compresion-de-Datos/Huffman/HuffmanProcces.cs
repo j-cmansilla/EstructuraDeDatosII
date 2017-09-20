@@ -124,14 +124,14 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         private void EssentialInformation(string ex)
         {
-            CodesForDecompressFile = ex + "//";
+            CodesForDecompressFile = ex + "*" + BinaryCodes.Count + System.Environment.NewLine;
             for (int i = 0; i < BinaryCodes.Count; i++)
             {
                 if (BinaryCodes.ElementAt(i).Key == "\n")
                 {
                     i++;
                 }
-                CodesForDecompressFile += BinaryCodes.ElementAt(i).Key + "//" + BinaryCodes.ElementAt(i).Value + "//";
+                CodesForDecompressFile += BinaryCodes.ElementAt(i).Key + "*" + BinaryCodes.ElementAt(i).Value + System.Environment.NewLine;
             }
             CodesForDecompressFile += System.Environment.NewLine;
         }
@@ -147,13 +147,14 @@ namespace Lab1_Compresion_de_Datos.Huffman
             fs.Write(tempByte, 0, tempByte.Count());
             fs.Flush();
 
-            StringBuilder StringBuilder = new StringBuilder();
-            for (int i = 0; i < tempByte.Count(); i++)
-            {
-                StringBuilder.Append(Convert.ToChar(tempByte[i]));
-            }
+            //StringBuilder StringBuilder = new StringBuilder();
+            //for (int i = 0; i < tempByte.Count(); i++)
+            //{
+            //    StringBuilder.Append(Convert.ToChar(tempByte[i]));
+            //}
+            //File.WriteAllText(NewFileName, StringBuilder.ToString());
            // System.IO.StreamWriter files = new System.IO.StreamWriter(completePath);
-          //  files.WriteLine(StringBuilder.ToString()); // "sb" is the StringBuilder
+          //  files.WriteLine(StringBuilder.ToString()); // "sb" is the StringBuilder;
 
 
         }
@@ -196,21 +197,26 @@ namespace Lab1_Compresion_de_Datos.Huffman
         private void getLines() //get dictionary of codes
         {
             A = File.ReadLines(OrinilaExtenssion+".comp").ToList(); // document
-            List<string> c = (A[0].Split(new string[] { "//" }, StringSplitOptions.None)).ToList();
+            List<string> c = (A[0].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
             OrinilaExtenssion = c[0]; //extencion
-            c.RemoveAt(0);
-            List<string> c1 = (A[1].Split(new string[] { "//" }, StringSplitOptions.None)).ToList();
-            c1.RemoveAt(0);
-            c.AddRange(c1);
-            c.RemoveAt(c.Count - 1);
+            int diclength = int.Parse(c[1]);
+            //c.RemoveAt(0);
+            //List<string> c1 = (A[1].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
+            //c1.RemoveAt(0);
+            //c.AddRange(c1);
+            //c.RemoveAt(c.Count - 1);
+
 
             BinaryCodes = new Dictionary<string, string>();
-            for (int i = 0; i < c.Count; i += 2)
+            string[] key;
+            for (int i = 1; i < diclength; i ++)
             {
-                BinaryCodes.Add(c[i + 1], c[i]);
+                key = (A[i].Split(new string[] { "*" }, StringSplitOptions.None));
+                BinaryCodes.Add(key[1], key[0]);
             }
-            A.RemoveAt(0);
-            A.RemoveAt(0);
+            //A.RemoveAt(0);
+            //A.RemoveAt(0);
+            A.RemoveRange(0, diclength+1);
         }
 
         private void ConvertFile(byte[] original)//Dictionary -> <CODE, ASCII>
