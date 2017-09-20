@@ -40,7 +40,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 {
                     B.Add(temp.Substring(i, 8));
                 }
-                catch //fix this... ****
+                catch //fix this... *********************************************************************************************************
                 {
                     B.Add(temp.Substring(i, temp.Length - i));
                 }
@@ -147,15 +147,11 @@ namespace Lab1_Compresion_de_Datos.Huffman
         }
         #endregion
 
-        #region Compress.2
-
-        #endregion
-
         public void UndoHuffman(string extension)
         {
             OrinilaExtenssion = extension;
-            getLines(extension); //checked
-            byte[] bytes = getbytes(extension); //checked
+            getLines(extension);
+            byte[] bytes = getbytes(extension); 
             ConvertFile(bytes);
             CreateF(extension);
         }
@@ -165,8 +161,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
         {
             FileInfo file = new FileInfo(pathorg);
             string path = file.Directory.ToString();
-           // string fileName = Path.GetTempPath(file);
-            string NewFileName = path + "\\" + OrinilaExtenssion +"fdgsd" ;
+            string NewFileName = path + "\\" + OrinilaExtenssion;
             File.WriteAllText(NewFileName, String.Join("", A.ToArray()));
             
         }
@@ -175,7 +170,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
             FileStream original = new FileStream(path + ".comp", FileMode.Open);
             BinaryReader lecturaBinaria = new BinaryReader(original);
             var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-            //File.Delete(path);
+            File.Delete(path + ".comp");
             return bytes;
         }
         private void getLines(string path) //get dictionary of codes
