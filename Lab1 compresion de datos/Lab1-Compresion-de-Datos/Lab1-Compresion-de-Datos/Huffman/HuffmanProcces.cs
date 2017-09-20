@@ -208,23 +208,19 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 A.Add(Convert.ToString(original[i], 2).PadLeft(8, '0'));
             }
             var result = String.Join("", A.ToArray());
-
-            string temp;
-            int lth = 1, index = 0;
+            
             A = new List<string>();
-
+            string code = string.Empty;
             for (int i = 0; i < result.Length; i++)
             {
-                temp = result.Substring(index, lth);
-                if (BinaryCodes.ContainsKey(temp))
+                code = code + result[i].ToString();
+                for (int k = 0; k < BinaryCodes.Count; k++)
                 {
-                    A.Add(BinaryCodes[temp]);
-                    lth = 1;
-                    index = i;
-                }
-                else
-                {
-                    lth++;
+                    if (code.Equals(BinaryCodes.Keys.ElementAt(k)))
+                    {
+                        A.Add(BinaryCodes.Values.ElementAt(k));
+                        code = string.Empty;
+                    }
                 }
             }
         }
