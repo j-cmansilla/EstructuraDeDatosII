@@ -55,12 +55,11 @@ namespace Lab1_Compresion_de_Datos.Huffman
             {
                 int t = Convert.ToByte(A.ElementAt(i), 2);
                 byte a = (byte)t;
-                    listConverted.Add(a);
-               
+                listConverted.Add(a);
             }
-            byte[] asdf = listConverted.ToArray();
-            return asdf;
+            return listConverted.ToArray();
         }
+
         private void getMainList(byte[] FS) //Create the mainlist of characters
         {
             for (int i = 0; i < FS.Length; i++)
@@ -122,15 +121,16 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         private void EssentialInformation(string ex)
         {
-            CodesForDecompressFile = ex + System.Environment.NewLine;
+            CodesForDecompressFile = ex + "//";
             for (int i = 0; i < BinaryCodes.Count; i++)
             {
                 if (BinaryCodes.ElementAt(i).Key == "\n")
                 {
                     i++;
                 }
-                CodesForDecompressFile += BinaryCodes.ElementAt(i).Key + "//" + BinaryCodes.ElementAt(i).Value + System.Environment.NewLine;
+                CodesForDecompressFile += BinaryCodes.ElementAt(i).Key + "//" + BinaryCodes.ElementAt(i).Value + "//";
             }
+            CodesForDecompressFile += System.Environment.NewLine;
         }
 
         private void CreateNewFile(string completePath) //Create new file, set the first line with the Dictionary codes and original extension
@@ -146,10 +146,11 @@ namespace Lab1_Compresion_de_Datos.Huffman
         }
         #endregion
 
-        public void UndoHuffman(byte[] bytes,string extension)
+        public void UndoHuffman(string extension)
         {
             OrinilaExtenssion = extension;
             getLines();
+            byte[] bytes = getbytes();
             ConvertFile(bytes);
             CreateF();
             //fill file....
@@ -163,22 +164,31 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string fileName = Path.GetFileNameWithoutExtension(OrinilaExtenssion);
             string NewFileName = path + "\\" + fileName + OrinilaExtenssion;
             File.WriteAllText(NewFileName, CodesForDecompressFile);
+            
         }
-
+        private byte[] getbytes()
+        {
+            List<byte[]> listConverted = new List<byte[]>();
+            for (int i = 2; i < A.Count; i++)
+            {
+               listConverted.Add(Encoding.ASCII.GetBytes(A[i]));
+            }
+            byte[] array = listConverted.SelectMany(a => a).ToArray();
+            return array;
+        }
         private void getLines() //get dictionary of codes
         {
-            A = File.ReadLines("C:\\Users\\sebas\\Desktop\\Test.comp").ToList();
-            A.RemoveAt(0);
-            A.RemoveAt(0);
+            A = File.ReadLines("C:\\Users\\sebas\\Desktop\\Test.comp").ToList(); // document
             List<string> c = (A[0].Split(new string[] { "//" }, StringSplitOptions.None)).ToList();
-            OrinilaExtenssion = c[0];
-            c.RemoveAt(c.Count - 1);
+            c.RemoveAt(0);
+            OrinilaExtenssion = c[0]; //extencion
             List<string> c1 = (A[1].Split(new string[] { "//" }, StringSplitOptions.None)).ToList();
+            c1.RemoveAt(0);
             c.AddRange(c1);
             c.RemoveAt(c.Count - 1);
 
             BinaryCodes = new Dictionary<string, string>();
-            for (int i = 1; i < c.Count; i += 2)
+            for (int i = 0; i < c.Count; i += 2)
             {
                 BinaryCodes.Add(c[i + 1], c[i]);
             }
@@ -186,6 +196,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         private void ConvertFile(byte[] original)//Dictionary -> <CODE, ASCII>
         {
+            A = new List<string>();
             for (int i = 0; i < original.Count(); i++)
             {
                 string character = Convert.ToChar(original[i]).ToString();
