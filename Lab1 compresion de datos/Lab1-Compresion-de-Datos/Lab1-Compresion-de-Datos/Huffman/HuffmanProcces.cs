@@ -20,10 +20,10 @@ namespace Lab1_Compresion_de_Datos.Huffman
             getMainList(bytes);
             CreateTree();
             getBinaryCodes(MainList.First(), null);
-            ConvertHuffman(bytes); //checked
+            ConvertHuffman(bytes);
             EssentialInformation(Path.GetFileName(extension)); //get extension
-            group(); 
-            byte[] tempBytes = ConvertToBytes(); //checked
+            group();
+            byte[] tempBytes = ConvertToBytes();
             CreateNewFile(extension, tempBytes);
         }
 
@@ -40,7 +40,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 {
                     B.Add(temp.Substring(i, 8));
                 }
-                catch //fix this... *********************************************************************************************************
+                catch //************************************************************************************************************************
                 {
                     B.Add(temp.Substring(i, temp.Length - i));
                 }
@@ -116,13 +116,22 @@ namespace Lab1_Compresion_de_Datos.Huffman
             for (int i = 0; i < original.Count(); i++)
             {
                 string character = Convert.ToChar(original[i]).ToString();
-                A.Add(BinaryCodes[character]); //Dictionary -> <ASCII, CODE>
+                if (character == "\n" || character == "\r")
+                {
+                    if (BinaryCodes.ContainsKey(" "))
+                        A.Add(BinaryCodes[" "]);
+                }
+                else
+                {
+                    A.Add(BinaryCodes[character]); //Dictionary -> <ASCII, CODE>
+                }
+
             }
         }
 
         private void EssentialInformation(string ex)
         {
-            CodesForDecompressFile = ex + "*" + BinaryCodes.Count +"*" + "H" +  System.Environment.NewLine;
+            CodesForDecompressFile = ex + "*" + BinaryCodes.Count + "*" + "H" + System.Environment.NewLine;
             for (int i = 0; i < BinaryCodes.Count; i++)
             {
                 if (BinaryCodes.ElementAt(i).Key == "\n")
@@ -168,14 +177,14 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string path = file.Directory.ToString();
             string NewFileName = path + "\\" + OrinilaExtenssion;
             File.WriteAllText(NewFileName, String.Join("", A.ToArray()));
-            
+
         }
         private byte[] getbytes(string path)
-        {     
+        {
             FileStream original = new FileStream(path + ".comp", FileMode.Open);
             BinaryReader lecturaBinaria = new BinaryReader(original);
             var bytes = lecturaBinaria.ReadBytes((int)original.Length);
-            File.Delete(path + ".comp");
+            original.Close();
             return bytes;
         }
 
@@ -189,25 +198,27 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         private void getLines(string path) //get dictionary of codes
         {
-            A = File.ReadLines(OrinilaExtenssion+".compD").ToList(); // document
+            A = File.ReadLines(OrinilaExtenssion + ".compD").ToList(); // document
             List<string> c = (A[0].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
             OrinilaExtenssion = c[0]; //extencion
             isHuff = c[2];
             int diclength = int.Parse(c[1]);
             BinaryCodes = new Dictionary<string, string>();
             string[] key;
-            for (int i = 1; i < diclength; i ++)
+            A.RemoveAt(A.Count() - 1);
+            if (A.Contains(""))
+            {
+                int index = A.FindIndex(a => a == "");
+                A[index] = "ENTER" + A[index + 1];
+                A.RemoveAt(index + 1);
+            }
+            for (int i = 1; i < diclength; i++)
             {
                 key = (A[i].Split(new string[] { "*" }, StringSplitOptions.None));
                 BinaryCodes.Add(key[1], key[0]);
             }
 
-            A.RemoveRange(0, diclength+1);
-
-
-            #region Sol V
-            //File.WriteAllLines(path, A);
-            #endregion
+            A.RemoveRange(0, diclength);
         }
 
         private void ConvertFile(byte[] original)//Dictionary -> <CODE, ASCII>
@@ -218,7 +229,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 A.Add(Convert.ToString(original[i], 2).PadLeft(8, '0'));
             }
             var result = String.Join("", A.ToArray());
-            
+
             A = new List<string>();
             string code = string.Empty;
             for (int i = 0; i < result.Length; i++)
@@ -228,8 +239,15 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 {
                     if (code.Equals(BinaryCodes.Keys.ElementAt(k)))
                     {
-                        A.Add(BinaryCodes.Values.ElementAt(k));
-                        code = string.Empty;
+                        if (BinaryCodes.Values.ElementAt(k) == "ENTER")
+                        {
+                            A.Add("\n");
+                        }
+                        else
+                        {
+                            A.Add(BinaryCodes.Values.ElementAt(k));
+                            code = string.Empty;
+                        }
                     }
                 }
             }
