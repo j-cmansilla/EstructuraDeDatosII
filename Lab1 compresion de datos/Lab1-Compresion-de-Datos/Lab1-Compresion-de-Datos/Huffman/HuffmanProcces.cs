@@ -37,7 +37,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
 
         #region Compress
-
+        string extraBytes;
         private void group()
         {
             List<string> B = new List<string>();
@@ -50,7 +50,8 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 }
                 catch 
                 {
-                    B.Add(temp.Substring(i, temp.Length - i));
+                    //B.Add(temp.Substring(i, temp.Length - i));
+                    extraBytes = temp.Substring(i, temp.Length - i);
                 }
             }
             A = B;
@@ -139,7 +140,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
 
         private void EssentialInformation(string ex)
         {
-            CodesForDecompressFile = ex + "*" + BinaryCodes.Count + "*" + "H" + System.Environment.NewLine;
+            CodesForDecompressFile = ex + "*" + BinaryCodes.Count + "*" + "H" + "*" + extraBytes + System.Environment.NewLine;
             for (int i = 0; i < BinaryCodes.Count; i++)
             {
                 if (BinaryCodes.ElementAt(i).Key == "\n")
@@ -158,7 +159,10 @@ namespace Lab1_Compresion_de_Datos.Huffman
             string fileName = Path.GetFileNameWithoutExtension(completePath);
             string NewFileName = path + "\\" + fileName + ".comp";
             FileInfo myFile = new FileInfo(NewFileName + "D");
-            myFile.Attributes &= ~FileAttributes.Hidden;
+            if (File.Exists(NewFileName + "D"))
+            {
+                myFile.Attributes &= ~FileAttributes.Hidden; 
+            }
             File.WriteAllText(NewFileName + "D", CodesForDecompressFile);
             myFile.Attributes |= FileAttributes.Hidden;
             FileStream fs = new FileStream(NewFileName, FileMode.Create, FileAccess.Write);
@@ -223,6 +227,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
             List<string> c = (A[0].Split(new string[] { "*" }, StringSplitOptions.None)).ToList();
             OrinilaExtenssion = c[0]; //extencion
             isHuff = c[2];
+            extraBytes = c[3];
             int diclength = int.Parse(c[1]);
             BinaryCodes = new Dictionary<string, string>();
             string[] key;
@@ -250,7 +255,7 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 A.Add(Convert.ToString(original[i], 2).PadLeft(8, '0'));
             }
             var result = String.Join("", A.ToArray());
-
+            result += extraBytes;
             A = new List<string>();
             string code = string.Empty;
             for (int i = 0; i < result.Length; i++)
