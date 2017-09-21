@@ -23,8 +23,9 @@ namespace Lab1_Compresion_de_Datos.Huffman
                 CreateTree();
                 getBinaryCodes(MainList.First(), null);
                 ConvertHuffman(bytes);
-                EssentialInformation(Path.GetFileName(extension)); //get extension
                 group();
+                EssentialInformation(Path.GetFileName(extension)); //get extension
+                
                 byte[] tempBytes = ConvertToBytes();
                 CreateNewFile(extension, tempBytes);
                 return true;
